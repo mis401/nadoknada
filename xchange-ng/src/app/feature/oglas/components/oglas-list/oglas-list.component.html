@@ -1,0 +1,7 @@
+<div class="full-wrap">
+    <div class="search-results">
+        <div *ngFor="let oglas of oglasi" class="result">
+            <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}" [oglas]="oglas"></app-oglas-preview>
+        </div>
+    </div>
+</div>

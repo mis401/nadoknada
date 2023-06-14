@@ -1,0 +1,21 @@
+<div class="full-wrap">
+    <p>Radi</p>
+    <div class="prijave">
+        <div class="prijava-card">
+            <mat-card *ngFor="let p of prijave">
+                <mat-card-header>
+                    <mat-card-title>{{p.kojiOglasSePrijavljuje.naziv}}</mat-card-title>
+                    <mat-card-subtitle>{{p.kojiKorisnikSePrijavljuje.username}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{p.tema}}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button color="primary" (click)="pogledaj(p)">Pogledaj</button>
+                    <button mat-raised-button color="warn" (click)="obrisiOglas(p)">Obrisi oglas</button>
+                    <button mat-raised-button color="warn" (click)="obrisiKorisnika(p)">Obrisi korisnika</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+    <h1>Da li sigurno zelite da obrisete Vas profil?</h1>
+    <h2>Ova akcija je trajna</h2>
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="basic" mat-dialog-close>Odustani</button>
+    <button mat-button color="warn" [mat-dialog-close]="true" cdkAutoFocus>Obrisi</button>
+</div>

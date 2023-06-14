@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+    <h1>Zasto zelite da prijavite ovaj oglas?</h1>
+    <input placeholder="Razlog prijave" [(ngModel)]="tekstPrijave">
+</div>
+<div mat-dialog-actions>
+    <button mat-raised-button color="basic" mat-dialog-close>Odustani</button>
+    <button mat-button color="warn" [mat-dialog-close]="tekstPrijave" cdkAutoFocus>Prijavi</button>
+</div>

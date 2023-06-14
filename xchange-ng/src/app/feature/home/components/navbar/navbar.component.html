@@ -1,0 +1,42 @@
+<c-navbar colorScheme="light" expand="lg" class="bg-light">
+    <c-container fluid>
+      <a cNavbarBrand [routerLink]="['/home']">
+        XChange
+      </a>
+      <button [cNavbarToggler]="collapseRef"></button>
+      <div #collapseRef="cCollapse" navbar cCollapse>
+        <c-navbar-nav class="me-auto mb-2 mb-lg-0">
+          <c-nav-item *ngIf="user === ''">
+            <a cNavLink [routerLink]="['/login']">Prijavi se</a>
+          </c-nav-item>
+          <c-nav-item *ngIf="user !== ''">
+            <a cNavLink (click)="logOut()">Odjavi se</a>
+          </c-nav-item>
+          <c-nav-item *ngIf="user !== ''">
+            <a cNavLink [routerLink]="['/profil']">Profil</a>
+          </c-nav-item>
+          <c-dropdown *ngIf="user !== ''" variant="nav-item" [popper]="false">
+            <a cDropdownToggle cNavLink>Oglasi</a>
+            <ul cDropdownMenu>
+              <li><button cDropdownItem [routerLink]="['/moji-oglasi']">Moji oglasi</button></li>
+              <li><button cDropdownItem [routerLink]="['/zapraceni-oglasi']">Zapraceni oglasi</button></li>
+            </ul>
+          </c-dropdown>
+          <c-nav-item *ngIf="user !== ''">
+            <a cNavLink [routerLink]="['/napravioglas']">Napravi oglas</a>
+          </c-nav-item>
+          <c-nav-item *ngIf="user !== ''">
+            <a cNavLink [routerLink]="['/chat']">DMs</a>
+          </c-nav-item>
+        </c-navbar-nav>
+        <form cForm class="d-flex" style="margin-right: 50%" role="search">
+          <input cFormControl type="search" placeholder="Pretrazi oglase" aria-label="Search" [(ngModel)]="imeOglasa" name="imeOglasa" class="me-2">
+          <button cButton color="primary" (click)="pretraziOglase()" variant="outline">Pretrazi</button>
+        </form>
+        <c-nav-item *ngIf="jwt.role==='admin'">
+          <a cNavLink [routerLink]="['/korisnicka-podrska']">Prijave</a>
+        </c-nav-item>
+      </div>
+    </c-container>
+  </c-navbar>
+  <router-outlet></router-outlet>

@@ -1,0 +1,40 @@
+.nov-oglas-element{
+    padding-top:10px;
+}
+
+.nov-oglas-card{
+    margin: auto;
+    width: 70%;
+    margin-top: 10px;
+    background-color: #b8f6f7a0;
+}
+
+.nov-oglas-wrapper{
+    width: 100%;
+    padding-top: 10px;
+    background-color: #71dfe143;
+}
+
+.prvi-tile{
+    height: 500px;
+}
+
+mat-card{
+    height: stretch;
+}
+
+.slika{
+    margin-right: 10px;
+}
+
+.flex-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+@media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+

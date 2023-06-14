@@ -1,0 +1,11 @@
+.conv-list{
+  box-shadow: 1px 1px;
+  list-style-type:none;
+}
+
+.spinner{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

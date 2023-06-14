@@ -1,0 +1,37 @@
+.host-wrapper{
+    display: flex;
+    justify-content: center;
+}
+
+.oglas-wrapper{
+    width:70%;
+}
+
+.oglas-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.oglas-tekst-i-slika{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.oglas-tekst{
+    display: flex;
+    flex-direction: column;
+}
+
+.akcije{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.owner{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+    column-gap: 10px;
+}

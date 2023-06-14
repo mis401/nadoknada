@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// model Guslar{
+//   id String @id @default(auto()) @map("_id") @db.ObjectId
+//   username String @unique
+//   password String? 
+//   hash String?
+// }
+
+model User {
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  username           String        @unique
+  hash               String
+  ime                String
+  prezime            String
+  grad               String
+  datum_rodjenja     DateTime
+  datum_registracije DateTime      @default(now())
+  broj_telefona      String
+  email              String
+
+  pregledavaOglasIds String[] @db.ObjectId 
+  pregledaniOglasi   Oglas[]       @relation("PregledaoOglas", fields: [pregledavaOglasIds], references: [id])
+
+  pretplacujeSeOglasIds String[] @db.ObjectId 
+  pretplaceniOglasi  Oglas[]    @relation("PretplacujeSe",fields: [pretplacujeSeOglasIds], references: [id])
+
+  konverzacijeIds   String[] @db.ObjectId 
+  konverzacije      Konverzacija[] @relation("Komunicira",fields: [konverzacijeIds], references: [id])
+
+  kreiranioglasi    Oglas[] @relation("KreiraniOglasi")
+
+  imaKomentareNaProfilu   Komentar[] @relation("imaKomentareNaProfilu")
+  ostavljaKomentari       Komentar[] @relation("OstavioKomentare")
+
+  resavaPrituzbe    Prituzba[] @relation("ResavaPrituzbe")
+  
+
+  //ostavljeneprituzbe        Prituzba[]   @relation("PrituzbaKorisnika", references: [id])
+  //resenjePrituzbe     Prituzba?     @relation("Resava", fields: [resenjePrituzbeId], references: [id])
+  
+  ostavljaPrituzbe    Prituzba[] @relation("OstavljaPrituzbu") 
+  dobijenePrituzbe    Prituzba[] @relation("DobijenePrituzbeUser")
+  ostavljaPonudeSalje Ponuda[] @relation("KoJePoslaoPonudu")
+
+  poslaoPoruke       Poruka[] @relation("PoslaoPoruku")
+  primioPoruke       Poruka[] @relation("PrimioPoruku")
+
+  resenjePrituzbeId   String?
+  role                String          @default("guest")
+  suspendovan         Boolean?        @default(false)
+  datum_zaposljavanja DateTime?
+  datum_postavljanja  DateTime?
+  datum_suspendovanja DateTime?
+}
+
+model Oglas {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  naziv           String
+  kvalitet        String
+  brojPoseta      Int?          @default(0)
+  opis            String
+  datumKreiranja  DateTime @default(now())
+  ponuda          String?
+  stanjeOglasa    String @default("aktivan")//aktivan resen obrisan
+  datumResavanja  DateTime?
+  datumBrisanja   DateTime?
+  razlogBrisanja  String?
+  slike           String[] 
+  
+  pregledavaIds   String[] @db.ObjectId
+  pregledaliKorisnici      User[]        @relation("PregledaoOglas",fields: [pregledavaIds], references: [id])
+
+  kategorijaIds   String[] @db.ObjectId
+  kategorije      Kategorija[] @relation("OglasPripadaKategoriji",fields: [kategorijaIds], references: [id])
+
+  kreiraoKorisnikId String @db.ObjectId
+  kreiraoKorisnik User @relation("KreiraniOglasi",fields: [kreiraoKorisnikId],references: [id],onDelete: Cascade)
+
+  notifikacije    Notifikacija[] @relation("OglasNotifikacija")
+
+
+  pretplacujeSeIds String[] @db.ObjectId
+  pretplaceniKorisnici User[]    @relation("PretplacujeSe",fields: [pretplacujeSeIds], references: [id])
+
+
+  dobijenePrituzbe  Prituzba[] @relation("DobijenePrituzbeOglas")
+
+  dobijenePonude Ponuda[] @relation("GdeJePoslataPonuda")
+
+  prihvacenaPonuda Ponuda[] @relation("PrihvatanjePonude")
+}
+
+model Kategorija {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  naziv     String
+  oglasIds  String[] @db.ObjectId
+  oglasi    Oglas[] @relation("OglasPripadaKategoriji",fields: [oglasIds], references: [id])
+} 
+
+model Notifikacija {
+  id      String     @id @default(auto()) @map("_id") @db.ObjectId
+  poruka  String
+  oglasId String?         @db.ObjectId
+  oglas   Oglas?        @relation("OglasNotifikacija", fields: [oglasId], references: [id])
+}
+
+model Konverzacija {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  datumPocetka      DateTime  @default(now())
+  vremeIzmene       DateTime  @default(now())
+  poruke            Poruka[]
+  userIds           String[] @db.ObjectId 
+  vodiKonverzacije  User[] @relation("Komunicira",fields: [userIds], references: [id])
+}
+
+model Poruka {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  tekst          String
+  vremeSlanja    DateTime @default(now())
+  
+  konverzacijaId String?  @db.ObjectId
+  konverzacija   Konverzacija?  @relation(fields: [konverzacijaId], references: [id])
+  senderId       String   @db.ObjectId
+  sender         User? @relation("PoslaoPoruku", fields: [senderId], references: [id])
+  receiverId     String   @db.ObjectId
+  receiver       User? @relation("PrimioPoruku", fields: [receiverId], references: [id])
+}
+
+model Komentar {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  tekst             String
+  ocena             Int
+  datumPostavljanja DateTime @default(now())
+
+  userkomeJeOstavljenKomentarId   String? @db.ObjectId @map("userImaKomentarId")
+  komeJeOstavljenKomentar         User?    @relation("imaKomentareNaProfilu", fields: [userkomeJeOstavljenKomentarId], references: [id],onDelete: Cascade)
+  userOstavioKomentarId           String? @db.ObjectId
+  ostavioKomentar                 User?      @relation("OstavioKomentare", fields: [userOstavioKomentarId], references: [id])//,onDelete: Cascade)
+}
+
+model Prituzba {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  ishod     String      @default("neresena")
+  tema      String?
+  resilaKorisnickaPodrska   String[] @db.ObjectId
+  resava                    User?      @relation("ResavaPrituzbe", fields: [resilaKorisnickaPodrska], references: [id])
+
+  ostavljaKorisnikId        String @db.ObjectId  
+  ostavljaPrituzbu          User @relation("OstavljaPrituzbu",fields: [ostavljaKorisnikId],references: [id])
+
+  reportovanKorisnikId      String? @db.ObjectId  
+  kojiKorisnikSePrijavljuje User? @relation("DobijenePrituzbeUser",fields: [reportovanKorisnikId],references: [id])
+
+  reportovanOglasId         String? @db.ObjectId 
+  kojiOglasSePrijavljuje      Oglas? @relation("DobijenePrituzbeOglas",fields: [reportovanOglasId],references: [id])
+}
+
+model Ponuda{
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  Naslov      String 
+  vrsta       String 
+  opis        String
+  slika       String?
+
+  koJePoslaoPonuduId String @db.ObjectId
+  koJePoslaoPonudu User @relation("KoJePoslaoPonudu",fields: [koJePoslaoPonuduId],references: [id],onDelete: Cascade)
+
+  oglasId String @db.ObjectId
+  oglas Oglas @relation("GdeJePoslataPonuda",fields: [oglasId],references: [id],onDelete: Cascade)
+  
+  prihvacenaNaOglasId String? @db.ObjectId
+  prihvacenaNaOglas Oglas? @relation("PrihvatanjePonude",fields: [prihvacenaNaOglasId],references: [id],onDelete: Cascade)
+}
+
+

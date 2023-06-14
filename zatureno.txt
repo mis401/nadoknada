@@ -1,0 +1,30 @@
+<div *ngIf="oglas$ | async as oglas; else unknown" >
+    <c-row>
+        <c-col [xs]="0" [md]="1"></c-col>
+        <c-col>
+            <c-card>
+                <c-card-body>
+                <h2 cCardTitle>{{oglas.naziv}}</h2>
+                <p cCardText>
+                    {{oglas.opis}}
+                </p>
+                </c-card-body>
+                <ul cListGroup>
+                <li cListGroupItem>Kvalitet: {{oglas.kvalitet}}</li>
+                <li cListGroupItem>Datum kreiranja: {{oglas.datumKreiranja}}</li>
+                <li cListGroupItem>Broj poseta: {{oglas.brojPoseta}}</li>
+                </ul>
+                <c-card-body *ngIf="user$ | async">
+                <button cButton color="primary" (click)="zaprati()" size="sm">Zaprati oglas!</button>
+                </c-card-body>
+            </c-card>
+        </c-col>
+        <c-col [xs]="0" [md]="1"></c-col>
+    </c-row>
+</div>
+<ng-template #unknown>
+    <div class="alert alert-danger" role="alert" >
+        Oglas nije pronadjen!
+        {{redirect()}}
+    </div>
+</ng-template>

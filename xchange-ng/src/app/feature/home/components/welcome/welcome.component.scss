@@ -1,0 +1,23 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+}
+
+.kategorije-i-search{
+    display: flex;
+    flex-direction: column;
+    width:30%;
+    justify-content: space-between;
+    margin-left: 10%;
+    column-gap: 15%;
+}
+
+.clear-button{
+    width: 150px!important;
+    min-width: unset!important;
+}
+
+.dugmici{
+    display: flex;
+    flex-direction: column;
+}

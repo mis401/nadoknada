@@ -1,0 +1,21 @@
+<div *ngIf="konverzacije else load" style="display: flex">
+    <div style="margin-right:10%; width: fit-content; display: flex; flex-direction: column;">
+        <h2>Konverzacije</h2>
+        <ul *ngFor="let k of konverzacije" (click)="selected(k)" class="conv-list">
+            <li>
+                <div>
+                    <h2>{{k.usernames[0] == username ? k.usernames[1] : k.usernames[0]}}</h2>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div style="width: 100%; margin-right: 10%">
+        <!-- <app-chat *ngIf="selectOb$ | async as selected" ></app-chat> -->
+            <router-outlet></router-outlet>
+    </div>
+</div>
+<ng-template #load>
+    <div class="load">
+        <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+    </div>
+</ng-template>

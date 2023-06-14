@@ -1,0 +1,24 @@
+<h1>Dobrodosli na XChange</h1>
+<div class="wrapper">
+    <div class="kategorije-i-search">
+        <div style="position: sticky; top: 0;">
+            <div style="display: flex; flex-direction: row;">
+                <mat-form-field class="search" >
+                    <input matInput placeholder="Pretrazi" [(ngModel)]="imeOglasa">
+                </mat-form-field>
+                <button mat-icon-button style="align-self: center; margin-left: 5%;" (click)="pretrazi()">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </div>
+            <mat-radio-group *ngIf="!clear" [(ngModel)]="kategorija" class="dugmici">
+                <mat-radio-button *ngFor="let kat of kategorije" [value]="kat.naziv">
+                    {{kat.naziv}}
+                </mat-radio-button>
+            </mat-radio-group>
+            <button mat-flat-button class="clear-button" color="basic" (click)="ocistiKat()">Ocisti kategoriju</button>
+        </div>
+    </div>
+    <div>
+        <app-oglas-list></app-oglas-list>
+    </div>
+</div>

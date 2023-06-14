@@ -1,0 +1,16 @@
+<div *ngIf="oglas">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{oglas.naziv}}</mat-card-title>
+      <mat-card-subtitle>{{oglas.kreiraoKorisnikUsername}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="{{oglas.slike}}" alt="slika"/>
+      <mat-card-content>
+        <ul>
+          <li mat-list-item>Kvalitet: {{oglas.kvalitet}}</li>
+          <li mat-list-item>Datum kreiranja: {{oglas.datumKreiranja | date:'mediumDate'}}</li>
+          <li mat-list-item>Broj poseta: {{oglas.brojPoseta}}</li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+</div>

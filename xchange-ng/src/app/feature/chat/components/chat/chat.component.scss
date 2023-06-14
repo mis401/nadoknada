@@ -1,0 +1,33 @@
+.chat{
+    border: 1px solid black;
+    width: 100%;
+}
+
+.chat-msg-wrap{
+
+    border: 1px solid black;
+    width: 100%;
+}
+
+.chat-msg{
+    width: fit-content;
+
+    border: 1px solid black;
+}
+.chat-card{
+    display: flex;
+    flex-direction: column;
+}
+
+.receiver{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sender{
+    display: flex;
+    justify-content: flex-end;
+}
+mat-card{
+    width: 50%;
+}

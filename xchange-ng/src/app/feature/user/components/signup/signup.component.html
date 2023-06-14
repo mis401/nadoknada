@@ -1,0 +1,97 @@
+<div class="signup-wrap">
+  <div class="row">
+    <div>
+      <h1>Sign up</h1>
+      <hr><br>
+      <form (ngSubmit)="onSubmit()" ngNativeValidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            [(ngModel)]="user.email"
+            name="email"
+            required
+            class="form-control"
+            id="email"
+            placeholder="enter your email">
+        </div>
+        <div class="form-group">
+          <label for="username">Korisnicko ime</label>
+          <input
+            [(ngModel)]="user.username"
+            name="username"
+            required
+            class="form-control"
+            id="username"
+            placeholder="Unesite korisnicko ime">
+        </div>
+        <div class="form-group">
+          <label for="password">Sifra</label>
+          <input
+            [(ngModel)]="user.password"
+            name="password"
+            type="password"
+            required
+            class="form-control"
+            id="password"
+            placeholder="Unesite sifru">
+        </div>
+        <div class="form-group">
+          <label for="prezime">Prezime</label>
+          <input
+            [(ngModel)]="user.prezime"
+            name="prezime"
+            required
+            class="form-control"
+            id="prezime"
+            placeholder="Prezime">
+        </div>
+        <div class="form-group">
+          <label for="ime">Ime</label>
+          <input
+            [(ngModel)]="user.ime"
+            name="ime"
+            required
+            class="form-control"
+            id="ime"
+            placeholder="Ime">
+        </div>
+        <div class="form-group">
+          <label for="grad">Grad</label>
+          <input
+            [(ngModel)]="user.grad"
+            name="grad"
+            required
+            class="form-control"
+            id="grad"
+            placeholder="Grad">
+        </div>
+        <div class="form-group">
+          <label for="datum_rodjenja">Datum rodjenja</label>
+          <input
+            [(ngModel)]="user.datum_rodjenja"
+            name="datum_rodjenja"
+            type="date"
+            required
+            class="form-control"
+            id="datum_rodjenja">
+        </div>
+        <div class="form-group">
+          <label for="broj_telefona">Broj telefona</label>
+          <input
+            [(ngModel)]="user.broj_telefona"
+            name="broj_telefona"
+            required
+            class="form-control"
+            id="broj_telefona"
+            placeholder="Unesite broj telefona">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a [routerLink]="['/']" class="btn btn-success">Cancel</a>
+      </form>
+      <p>
+        <span>Already have an account?&nbsp;</span>
+        <a [routerLink]="['/log-in']">Log in!</a>
+      </p>
+    </div>
+  </div>
+</div>

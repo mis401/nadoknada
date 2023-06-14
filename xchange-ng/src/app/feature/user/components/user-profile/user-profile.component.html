@@ -1,0 +1,67 @@
+<mat-card class="user-profile"  *ngIf="fullUser as user">
+<div style="display:flex">
+    <div>
+        <mat-card-header style="margin-left: 17%">
+          <mat-card-title>
+            <h1>{{ user.ime }} {{user.prezime}}</h1>
+          </mat-card-title>
+        </mat-card-header>
+        <div class="slika">
+            <p>Placeholder za sliku</p>
+        </div>
+    </div>
+        <div class="info-form">
+            <mat-card-content class="profile-content-wrapper">
+                <mat-card-content class="profile-content">
+                    <mat-form-field class="info-element" appearance="outline">
+                        <mat-label>Korisnicko ime</mat-label>
+                        <input matInput placeholder="Korisnicko ime" [readonly]="!editable" [(ngModel)]="user.username" >
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <mat-form-field>
+                        <input matInput placeholder="Lozinka" [readonly]="!editable" [(ngModel)]="user.password" [type]="hide ? 'password' : 'text'" required>
+                        <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-hint *ngIf="user.password == ''">Unesite lozinku</mat-hint>
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <mat-form-field class="info-element" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput placeholder="Email" [readonly]="!editable" [(ngModel)]="user.email" >
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <mat-form-field class="info-element" appearance="outline">
+                        <mat-label>Broj telefona</mat-label>
+                        <input matInput placeholder="Broj telefona" [readonly]="!editable" [(ngModel)]="user.broj_telefona" >
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <mat-form-field class="info-element" appearance="outline">
+                        <mat-label>Grad</mat-label>
+                        <input matInput placeholder="Grad" [readonly]="!editable" [(ngModel)]="user.grad" >
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <mat-form-field class="info-element" appearance="outline">
+                        <mat-label>Datum rodjenja</mat-label>
+                        <input matInput [matDatepicker]="picker" [(ngModel)]="user.datum_rodjenja">
+                            <mat-hint>MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-card-content class="profile-content">
+                    <label class="labela">Datum registracije</label>
+                    <p>{{ user?.datum_registracije | date:'mediumDate' }}</p>
+                    <mat-divider></mat-divider>
+                </mat-card-content>
+            </mat-card-content>
+        </div>
+    </div>
+  <mat-card-actions>
+    <button mat-raised-button color="basic" class="buttons" *ngIf="!editable" (click)="onEdit()">Edit</button>
+    <button mat-raised-button color="primary" class="buttons" (click)="onSubmit()" *ngIf="editable">Submit</button>
+    <button mat-raised-button color="warn" class="buttons" (click)="onDelete()">Delete</button>
+  </mat-card-actions>

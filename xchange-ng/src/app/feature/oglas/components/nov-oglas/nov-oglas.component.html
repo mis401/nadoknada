@@ -1,0 +1,103 @@
+<div class="nov-oglas-wrapper">
+    <mat-card class="nov-oglas-card">
+        <mat-card-header>
+            <mat-card-title>
+                <h1>Nov oglas</h1>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-grid-list cols="2">
+            <div class="flex-container">
+                <mat-card-content>
+                    <form [formGroup]="oglasForm" (ngSubmit)="onSubmit()">
+                        <mat-card-content class="form-content">
+                        <mat-form-field class="nov-oglas-element" appearance="outline">
+                            <mat-label>Naziv oglasa</mat-label>
+                            <input matInput placeholder="Naziv oglasa" formControlName="naziv_oglasa">
+                            <mat-error *ngIf="oglasForm.get('naziv_oglasa')!.hasError('required')">
+                                Naziv oglasa je obavezan
+                            </mat-error>
+                        </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Opis oglasa</mat-label>
+                                <textarea matInput placeholder="Opis oglasa" formControlName="opis_oglasa"></textarea>
+                                <mat-error *ngIf="oglasForm.get('opis_oglasa')!.hasError('required')">
+                                    Opis oglasa je obavezan
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Ponuda</mat-label>
+                                <textarea matInput placeholder="Ponuda" formControlName="ponuda"></textarea>
+                                <mat-error *ngIf="oglasForm.get('ponuda')!.hasError('required')">
+                                    Ponuda je obavezna
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Grad</mat-label>
+                                <input matInput placeholder="Grad" formControlName="grad">
+                                <mat-error *ngIf="oglasForm.get('grad')!.hasError('required')">
+                                    Grad je obavezan
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Kvalitet</mat-label>
+                                <mat-select formControlName="kvalitet">
+                                    <mat-option value="NOVO">Novo</mat-option>
+                                    <mat-option value="KORISCENO">Korisceno</mat-option>
+                                    <mat-option value="OSTECENO">Osteceno</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="oglasForm.get('kvalitet')!.hasError('required')">
+                                    Kvalitet je obavezan
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Kategorija</mat-label>
+                                <mat-select formControlName="kategorija" multiple>
+                                    <mat-option *ngFor="let kat of kategorije" [value]="kat.id">{{kat.naziv}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="oglasForm.get('kategorija')!.hasError('required')">
+                                    Kategorija je obavezna
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                        <mat-card-content>
+                            <mat-form-field class="nov-oglas-element" appearance="outline">
+                                <mat-label>Tip oglasa</mat-label>
+                                <mat-select formControlName="tip_oglasa">
+                                    <mat-option value="PRODAJA">PRODAJA</mat-option>
+                                    <mat-option value="KUPOVINA">KUPOVINA</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="oglasForm.get('tip_oglasa')!.hasError('required')">
+                                    Tip oglasa je obavezan
+                                </mat-error>
+                            </mat-form-field>
+                        </mat-card-content>
+                    </form>
+                </mat-card-content>
+                <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+                    <div class="slika">
+                        <input style="margin-bottom: 15px"formControlName="slika" type="file" accept="image/*" (change)="onFileSelected($event)" required/>
+                        <mat-error *ngIf="slika == null">
+                            Slika je obavezna
+                        </mat-error>
+                        <mat-card *ngIf="slika">
+                            <img mat-card-image [src]="slika" alt="slika" width="200" height="200">
+                        </mat-card>
+                    </div>
+                </form>
+            </div>
+            </mat-grid-list>
+        <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="onSubmit()">Dodaj oglas</button>
+        </mat-card-actions>
+    </mat-card>
+</div>

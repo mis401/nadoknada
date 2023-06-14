@@ -1,0 +1,32 @@
+<router-outlet></router-outlet>
+<div class="chat">
+    <div class="chat-card">
+        <div *ngFor="let m of konverzacija.poruke.slice().reverse()">
+            <div *ngIf="m.tekst != ''" style="margin-bottom: 10px">
+                <div class="chat-msg-wrap receiver" *ngIf="m.receiver==username else sender">
+                    <div class="chat-msg">
+                            <p>{{m.tekst}} {{m.sender}} {{m.receiver}}</p>
+                    </div> 
+                </div>
+                <ng-template #sender>
+                    <div class="chat-msg-wrap sender">
+                        <div class="chat-msg">
+                                <p>{{m.tekst}} {{m.sender}} {{m.receiver}}</p>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="akcije">
+            <div class="input-poruke">
+                <mat-form-field style="width: 300px">
+                    <textarea matInput type="text" placeholder="Poruka" [(ngModel)]="messageText"></textarea>
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="reset" (click)="sendMessage()">
+                    Posalji
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+```

@@ -1,0 +1,40 @@
+<div class="host-wrapper" *ngIf="oglas">
+    <div class="oglas-wrapper">
+        <h2>{{oglas.naziv}}</h2>
+        <h4>Kategorija: {{kategorija.naziv}}</h4>
+        <div class="oglas-content">
+            <div class="oglas-tekst-i-slika">
+                <div class="oglas-tekst">
+                    <div>
+                        <p>Kvalitet: {{oglas.kvalitet}}</p>
+                        <p>(Broj poseta {{oglas.brojPoseta}})</p>
+                        <p>{{oglas.datumKreiranja | date:'mediumDate'}}</p>
+                    </div>
+                    <div class="oglas-opis">
+                        <p>Opis:{{oglas.opis}}</p>
+                    </div>
+                    <div class="oglas-ponuda">
+                        <p>{{oglas.ponuda}}</p>
+                    </div>
+                </div>
+                <div>
+                    <img src="{{oglas.slike}}" alt="slika">
+                </div>
+            </div>
+        </div>
+        <div class="akcije">
+            <button mat-icon-button color="warn" [disabled]="prati" (click)="zaprati()">
+              <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" (click)="ponudi()">Unesi ponudu</button>
+            <button mat-raised-button color="warn" (click)="prijavi()">Prijavi</button>
+            <button mat-icon-button color="basic" (click)="chat()">
+                <mat-icon>chat</mat-icon>
+            </button>
+        </div>
+        <div *ngIf="oglas.kreiraoKorisnikId===userId" class="owner">
+            <button mat-raised-button color="primary" (click)="izmeni()">Izmeni</button>
+            <button mat-raised-button color="warn" (click)="obrisi()">Obrisi</button>
+        </div>
+    </div>
+</div>

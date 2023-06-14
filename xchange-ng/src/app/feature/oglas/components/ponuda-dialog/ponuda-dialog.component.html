@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+    <h1>Koja je Vasa ponuda?</h1>
+    <input placeholder="Ponuda" [(ngModel)]="tekstPonude">
+</div>
+<div mat-dialog-actions>
+    <button mat-flat-button color="basic" mat-dialog-close>Odustani</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="tekstPonude" cdkAutoFocus>Ponudi</button>
+</div>
