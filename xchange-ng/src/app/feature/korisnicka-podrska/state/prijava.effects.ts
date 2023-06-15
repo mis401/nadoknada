@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { KorisnickaPodrskaService } from "../services/korisnicka-podrska.service";
 import { ucitajPrijave, ucitajPrijaveFail, ucitajPrijaveSuccess } from "./prijava.actions";
-import { catchError, map, of, switchMap } from "rxjs";
+import { catchError, map, of, switchMap, tap } from "rxjs";
 
 @Injectable()
 export class PrijavaEffects{
@@ -10,6 +10,7 @@ export class PrijavaEffects{
     ucitajPrijave$ = createEffect(() => this.action$.pipe(
         ofType(ucitajPrijave),
         switchMap((action) => this.services.ucitajPrijave().pipe(
+            tap((prijave) => console.log(prijave)),
             map((prijave) => ucitajPrijaveSuccess({prijave})),
             catchError((error) => of(ucitajPrijaveFail({error})))
         ))

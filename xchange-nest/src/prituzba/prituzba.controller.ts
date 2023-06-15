@@ -13,7 +13,7 @@ export class PrituzbaController
 {
     constructor(private prituzbeService:PrituzbaService){}
     @UseGuards(AuthGuard("jwt"))
-    @Roles(Role.USER)
+    @Roles(Role.USER, Role.ADMIN)
     @UseGuards(RolesGuard)
     @Post("prijaviKorisnika/:id")
     prijaviKorisnika(@Body() dtoPrituzba:prituzbaKorisnikaDto, @GetUser() user:User)
@@ -21,7 +21,7 @@ export class PrituzbaController
         return this.prituzbeService.prijaviKorisnika(dtoPrituzba,user);
     }
     @UseGuards(AuthGuard("jwt"))
-    @Roles(Role.USER)
+    @Roles(Role.USER, Role.ADMIN)
     @UseGuards(RolesGuard)
     @Post("prijaviOglas")
     prijaviOglas(@Body() dtoPrituzba:prituzbaOglasDto, @GetUser() user:User)

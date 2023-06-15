@@ -100,7 +100,6 @@ export class PrituzbaService
                         id:prituzba.reportovanKorisnikId
                     }
                 });
-
             }
          }
         const resenaPrijava= await this.prismaS.prituzba.update({

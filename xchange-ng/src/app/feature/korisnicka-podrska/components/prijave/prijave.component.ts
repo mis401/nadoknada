@@ -25,11 +25,12 @@ export class PrijaveComponent implements OnInit, OnDestroy{
 
 
   ngOnInit(): void {
+    
     this.store.dispatch(ucitajPrijave());
     this.prijaveSub$ = this.store.select(prijaveListaSelector).subscribe({
       next: (prijave) => {
-        this.prijave = [...prijave];
-        console.log(this.prijave[0]);
+        if(prijave.length > 0)
+          this.prijave = [...prijave];
       }
     }) 
   }
