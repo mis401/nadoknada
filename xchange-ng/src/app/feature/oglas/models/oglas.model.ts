@@ -1,3 +1,6 @@
+import { FullUserInfo } from "../../user/models/fulluserinfo.model"
+import { Kategorija } from "./kategorija.model"
+
 export interface Oglas{
     id:          string       
     naziv:       string
@@ -8,13 +11,17 @@ export interface Oglas{
     ponuda:      string
     aktivanOglas: boolean 
     resenOglas:  boolean 
-    obrisanOglas: boolean 
+    obrisanOglas: boolean
+    stanjeOglasa: string
     datumResavanja:  Date
     datumBrisanja:   Date
     razlogBrisanja:  string
     kreiraoKorisnikId?:string;
     kreiraoKorisnikUsername?:string;
     kategorijaIds?:string[];
+    kategorije?: Kategorija[];
     slike?: File[] | null;
+    slikaURL: string | null;
     pretplacujeSeIds?: string[]
+    kreiraoKorisnik?: FullUserInfo
 }

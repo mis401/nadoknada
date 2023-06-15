@@ -31,3 +31,12 @@ export const ucitavanjeKategorijaFail = createAction(`[Oglas] Ucitavanje kategor
 
 export const odabranaKategorija = createAction(`[Oglas] Odabrana kategorija`, props<{kategorija: Kategorija}>());
 export const oglasiKategorijeUcitani = createAction(`[Oglas] Oglasi kategorije ucitani`, props<{oglasi: Oglas[]}>());
+
+export const ucitajOglasPoId = createAction(`[Oglas] Ucitaj oglas po id`, props<{id: string}>());
+export const ucitajOglasPoIdSuccess = createAction(`[Oglas] Ucitavanje oglasa po id uspesno`, props<{oglas: Oglas}>());
+export const ucitajOglasPoIdFail = createAction(`[Oglas] Ucitavanje oglasa po id neuspesno`, props<{error: any}>());
+
+export const ucitajNajpoznatijeOglase = createAction(`[Oglas] Ucitaj najpoznatije oglase`);
+export const ucitavanjeNajpoznatijihOglasaSuccess = createAction(`[Oglas] Ucitavanje najpoznatijih oglasa uspesno`, props<{oglasi: Oglas[]}>());
+export const ucitavanjeNajpoznatijihOglasaFail = createAction(`[Oglas] Ucitavanje najpoznatijih oglasa neuspesno`, props<{error: any}>());
+

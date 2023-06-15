@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { PonudaService } from './ponuda.service';
 import { PonudaDto } from 'src/dto';
 import { retry } from 'rxjs';
@@ -23,9 +23,23 @@ export class PonudaController
     @Roles(Role.ADMIN,Role.USER)
     @UseGuards(RolesGuard)
     @Delete("obrisi/:id")
-    obrisi(@Param("id") id:string, @GetUser() user:User)
+    async obrisi(@Param("id") id:string, @GetUser() user:User)
     {
-        return this.ponudaService.obrisiPonudu(id,user);
+        return await this.ponudaService.obrisiPonudu(id,user);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Get(`ponudeNaOglas/:id`)
+    async ponudeNaOglas(@Param("id") id:string, @GetUser() user:User)
+    {
+        return await this.ponudaService.ponudeNaOglas(id, user.id);
     }
     //ne moze da se obrise ponuda resenog oglasa
+
+    @UseGuards(AuthGuard("jwt"))
+    @Put('prihvatiPonudu/:id')
+    async prihvatiPonudu(@Param('id') id:string, @GetUser() user:User)
+    {
+        return await this.ponudaService.prihvatiPonudu(id,user.id);
+    }
 }

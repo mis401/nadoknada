@@ -27,6 +27,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrijaviOglasDialogComponent } from './components/prijavi-oglas-dialog/prijavi-oglas-dialog.component';
 import { PonudaDialogComponent } from './components/ponuda-dialog/ponuda-dialog.component';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RouterModule } from '@angular/router';
+import { KomentarModule } from '../komentar/komentar.module';
+import { SlikaDialogComponent } from './components/slika-dialog/slika-dialog.component';
+import { PrihvatanjePonudaDialogComponent } from './components/prihvatanje-ponuda-dialog/prihvatanje-ponuda-dialog.component';
+
 
 
 
@@ -34,7 +40,15 @@ import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
-  declarations: [OglasComponent, OglasListComponent, OglasPreviewComponent, NovOglasComponent, PrijaviOglasDialogComponent, PonudaDialogComponent],
+  declarations: [OglasComponent, 
+    OglasListComponent, 
+    OglasPreviewComponent, 
+    NovOglasComponent, 
+    PrijaviOglasDialogComponent, 
+    PonudaDialogComponent, 
+    SlikaDialogComponent, 
+    PonudaDialogComponent, 
+    PrihvatanjePonudaDialogComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -49,10 +63,14 @@ import { MatListModule } from '@angular/material/list';
     MatDialogModule,
     MatSelectModule,
     ReactiveFormsModule,
-    MatDialogModule,
     MatListModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatProgressSpinnerModule,
+    KomentarModule,
     StoreModule.forFeature(Features.oglas, oglasReducer, {}),
     EffectsModule.forFeature([OglasEffects]),
+    RouterModule,
   ],
   exports: [OglasComponent, OglasListComponent, OglasPreviewComponent],
 })

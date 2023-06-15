@@ -88,5 +88,23 @@ export class OglasService {
     return this.http.delete(`${this.BASE_URL}/obrisiOglas/${oglas}`);
   }
 
+  ucitajOglasPoId(id: string){
+    return this.http.get<Oglas>(`${this.BASE_URL}/ucitajOglasPoId/${id}`);
+  }
 
+  ucitajNajpoznatijeOglase() : Observable<Oglas[]> {
+    return this.http.get<Oglas[]>(`${this.BASE_URL}/najpoznatijiOglasi`);
+  }
+
+  ucitajPonudeZaOglas(id: string){
+    return this.http.get<Ponuda[]>(`${envLocal.api}/ponuda/ponudeNaOglas/${id}`);
+  }
+
+  prihvatiPonudu(ponuda: string){
+    return this.http.put(`${envLocal.api}/ponuda/prihvatiPonudu/${ponuda}`, {});
+  }
+
+  resiPrijavu(prijavaId: string, ishod: string){
+    return this.http.put(`${envLocal.api}/prituzba/ResenaPrijava/${prijavaId}/${ishod}`, {});
+  }
 }

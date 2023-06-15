@@ -165,14 +165,19 @@ export class OglasService
     {
         const oglas=await this.prismaS.oglas.findMany({
             where:{
-                naziv: { 
-                    contains: naslov , mode: 'insensitive',
-                }, 
+                AND: [
+                    { naziv: { contains: naslov, mode: 'insensitive' } },
+                    { stanjeOglasa: {contains: "aktivan", mode: 'insensitive' }}
+                ],
                 kategorije: { 
                     some: {
                         id: kategorijaId,
                     }, 
                 }, 
+            },
+            include :{
+                kreiraoKorisnik:true,
+                kategorije: true,
             }
         })
         return oglas;
@@ -181,11 +186,19 @@ export class OglasService
     { 
         const oglasi = await this.prismaS.oglas.findMany({
              where: { 
-                naziv: { 
-                    contains: name , mode: 'insensitive',
-                }, 
+                AND: [
+                    { naziv: { contains: name, mode: 'insensitive' } },
+                    { stanjeOglasa: {contains: "aktivan", mode: 'insensitive' } },
+                ],
             }, 
-        }); 
+            include: {
+                kreiraoKorisnik: true,
+                kategorije: true,
+            },
+        });
+        for (let oglas of oglasi){
+            delete (oglas.kreiraoKorisnik.hash);
+        }
         return oglasi;
     }
     async getOglas(id:string)
@@ -193,6 +206,10 @@ export class OglasService
         const oglas= await this.prismaS.oglas.findUnique({
             where:{
                 id
+            },
+            include:{
+                kategorije:true,
+                kreiraoKorisnik:true,
             }
         });
         return oglas;
@@ -366,7 +383,11 @@ export class OglasService
         const oglasi = await this.prismaS.oglas.findMany({
             where:{
                 kreiraoKorisnikId: userId
-            }
+            },
+            include:{
+                kategorije: true,
+                kreiraoKorisnik: true,
+            },
         });
         const user = await this.prismaS.user.findUnique({
             where:{
@@ -390,6 +411,7 @@ export class OglasService
         const oglasi = await this.prismaS.oglas.findMany({
             where:{
                 AND: [
+                    {stanjeOglasa: { contains: "aktivan", mode: "insensitive"}},
                     {pretplaceniKorisnici: {some: {id: userId}}},
                 ]
             }
@@ -401,11 +423,42 @@ export class OglasService
         const oglasi = await this.prismaS.oglas.findMany({
             where:{
                 AND: [
-                {kategorije: {some: {id: kategorijaId}}}
+                {kategorije: {some: {id: kategorijaId}}},
+                {stanjeOglasa: { contains: "aktivan", mode: "insensitive"}}
                 ]
             }
         });
         return oglasi;
     }
 
+    async vratiOglasPoId(oglasId: string){
+        const oglasi = await this.prismaS.oglas.findFirst({
+            where:{
+                id: oglasId
+            },
+            include:{
+                kreiraoKorisnik: true,
+                kategorije: true,
+            }
+        });
+        return oglasi;
+    }
+
+
+    async vratiNajpoznatijeOglase(){
+        const oglasi = await this.prismaS.oglas.findMany({
+            where:{
+                stanjeOglasa: { contains: "aktivan", mode: "insensitive"}
+            },
+            orderBy: {
+                brojPoseta: 'desc',
+            },
+            include:{
+                kreiraoKorisnik: true,
+                kategorije: true,
+            },
+            take: 10,
+        });
+        return oglasi;
+    }
 }

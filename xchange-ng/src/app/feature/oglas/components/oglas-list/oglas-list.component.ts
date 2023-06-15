@@ -5,7 +5,7 @@ import { OglasState } from '../../state/oglas.state';
 import { Store } from '@ngrx/store';
 import { oglasiListaSelector } from '../../state/oglas.selectors';
 import { OglasPreviewComponent } from '../oglas-preview/oglas-preview.component';
-import { selektovanOglas } from '../../state/oglas.actions';
+import { selektovanOglas, ucitajNajpoznatijeOglase } from '../../state/oglas.actions';
 import { Router } from '@angular/router';
 
 
@@ -27,9 +27,9 @@ export class OglasListComponent implements OnInit, OnDestroy {
 
 
   selektovanOglas(ElemRef: OglasPreviewComponent){
-    console.log(ElemRef.oglas?.id);
+    console.log("Selektovan je" + ElemRef.oglas?.id);
     this.store.dispatch(selektovanOglas({oglas: ElemRef.oglas!}))
-    this.router.navigate([`/oglas`]);
+    this.router.navigate([`/oglasi/${ElemRef.oglas?.id}`]);
   }
 
 
@@ -40,9 +40,14 @@ export class OglasListComponent implements OnInit, OnDestroy {
     this.oglasiSub = this.store.select(oglasiListaSelector).pipe(
     ).subscribe({
       next: (oglasi) => {
+        if(oglasi.length == 0){
+          this.store.dispatch(ucitajNajpoznatijeOglase());
+        }
+        else{
         console.log(oglasi);
         this.oglasi = [...oglasi];
         this.oglasi.sort((a, b) => b.brojPoseta-a.brojPoseta);
+        }
       }
     })
   }

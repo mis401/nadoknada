@@ -1,10 +1,14 @@
+import { FullUserInfo } from "../../user/models/fulluserinfo.model"
+import { Oglas } from "./oglas.model"
+
 export interface Ponuda {
     id: string
     Naslov: string
     vrsta: string
     opis: string
-    slika: string | null
-    koJePoslaoPonuduId: string
+    koJePoslaoPonuduId: string,
+    koJePoslaoPonudu?: FullUserInfo,
     oglasId: string
-    prihvacenaNaOglasId: string | null
+    prihvacenaNaOglasId: string | null,
+    oglas?: Oglas 
   }

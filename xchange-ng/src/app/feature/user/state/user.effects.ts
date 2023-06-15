@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Actions, ofType, createEffect } from "@ngrx/effects";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
-import { loginUser, loginUserSuccess, loginUserFailed, signupUser, signupUserSuccess, signupUserFailed, logoutUser, logoutUserSuccess, loadUserToken, loadFullUser, loadFullUserSuccess, loadUserFailed } from "./user.actions";
+import { loginUser, loginUserSuccess, loginUserFailed, signupUser, signupUserSuccess, signupUserFailed, logoutUser, logoutUserSuccess, loadUserToken, loadFullUser, loadFullUserSuccess, loadUserFailed, updateUser, updateUserSuccess, updateUserFailed, deleteUser, deleteUserSuccess } from "./user.actions";
 import { catchError, map, of, switchMap, tap } from "rxjs";
 
 @Injectable()
@@ -38,6 +38,22 @@ export class UserEffects {
         switchMap((action) => this.authService.loadFullUser().pipe(
             map((user) => loadFullUserSuccess({user})),
             catchError((error) => of(loadUserFailed({error})))
+        ))
+    ))
+
+    updateUser$ = createEffect( () => this.actions$.pipe(
+        ofType(updateUser),
+        switchMap((action) => this.authService.updateUser(action.user).pipe(
+            map((user) => updateUserSuccess({user})),
+            catchError((error) => of(updateUserFailed({error})))
+        ))
+    ))
+
+    deleteUser$ = createEffect( () => this.actions$.pipe(
+        ofType(deleteUser),
+        switchMap((action) => this.authService.deleteUser(action.user).pipe(
+            map((message) => deleteUserSuccess({message})),
+            catchError((error) => of(updateUserFailed({error})))
         ))
     ))
 }

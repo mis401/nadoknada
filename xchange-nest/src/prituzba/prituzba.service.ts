@@ -61,6 +61,9 @@ export class PrituzbaService
     async prijave(){
         try {
             const prijave=await this.prismaS.prituzba.findMany({
+                where: {
+                    ishod: {contains: "neresena"},
+                },
                 include:{
                     ostavljaPrituzbu:true,
                     kojiKorisnikSePrijavljuje:true,
@@ -74,5 +77,41 @@ export class PrituzbaService
         catch(error){
             throw error;
         }
+    }
+
+    async ResenaPrijava(user:string,idPrijave: string, ishod: string)
+    {
+        if(ishod !== 'otkazana') {
+            const prituzba=await this.prismaS.prituzba.findFirst({
+                where:{
+                    id:idPrijave
+                }
+            });
+            const oglas=await this.prismaS.oglas.delete({
+                where:{
+                    id:prituzba.reportovanOglasId
+                }
+            });
+        
+            if(ishod === 'obrisankorisnik') {
+                
+                const korisnik=await this.prismaS.user.delete({
+                    where:{
+                        id:prituzba.reportovanKorisnikId
+                    }
+                });
+
+            }
+         }
+        const resenaPrijava= await this.prismaS.prituzba.update({
+            where:{
+                id:idPrijave
+            },
+            data:{
+                resava:{connect:{id:user}},
+                ishod: "resena",
+                kojiOglasSePrijavljuje:{disconnect:true},
+            }
+        });
     }
 }

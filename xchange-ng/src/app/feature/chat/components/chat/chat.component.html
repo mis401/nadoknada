@@ -1,4 +1,5 @@
 <router-outlet></router-outlet>
+<button mat-raised-button color="primary" (click)="oceni()">Ocenite korisnika</button>
 <div class="chat">
     <div class="chat-card">
         <div *ngFor="let m of konverzacija.poruke.slice().reverse()">
@@ -20,7 +21,7 @@
         <div class="akcije">
             <div class="input-poruke">
                 <mat-form-field style="width: 300px">
-                    <textarea matInput type="text" placeholder="Poruka" [(ngModel)]="messageText"></textarea>
+                    <textarea matInput type="text" placeholder="Poruka" (keydown.enter)="sendMessage()" [(ngModel)]="messageText"></textarea>
                 </mat-form-field>
                 <button mat-raised-button color="primary" type="reset" (click)="sendMessage()">
                     Posalji
@@ -29,4 +30,4 @@
         </div>
     </div>
 </div>
-```
+

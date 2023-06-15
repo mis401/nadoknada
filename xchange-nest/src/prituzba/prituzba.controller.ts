@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { PrituzbaService } from './prituzba.service';
 import { prituzbaKorisnikaDto, prituzbaOglasDto } from 'src/dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -38,5 +38,13 @@ export class PrituzbaController
     prijave(){
         return this.prituzbeService.prijave();
     }
-    
+
+    @UseGuards(AuthGuard("jwt"))
+    @Roles(Role.ADMIN)
+    @UseGuards(RolesGuard)
+    @Put('ResenaPrijava/:idPrijave/:ishod')
+    resenaPrijava(@Param("idPrijave") idPrijave:string, @Param('ishod') ishod: string, @GetUser() user:User)
+    {
+        return this.prituzbeService.ResenaPrijava(user.id, idPrijave, ishod);
+    }
 }

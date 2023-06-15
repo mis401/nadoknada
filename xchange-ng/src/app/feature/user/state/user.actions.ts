@@ -24,3 +24,11 @@ export const loadFullUser = createAction(`[User] Load Full User`, props<{token: 
 
 export const loadFullUserSuccess = createAction(`[User] Load Full User Success`, props<{user: FullUserInfo}>());
 export const loadUserFailed = createAction(`[User] Load User Failed`, props<{error: any}>());
+
+export const updateUser = createAction(`[User] Update User`, props<{user: FullUserInfo}>());
+export const updateUserSuccess = createAction(`[User] Update User Success`, props<{user: FullUserInfo}>());
+export const updateUserFailed = createAction(`[User] Update User Failed`, props<{error: any}>());
+
+export const deleteUser = createAction(`[User] Delete User`, props<{user: string}>());
+export const deleteUserSuccess = createAction(`[User] Delete User Success`, props<{message: string}>());
+export const deleteUserFailed = createAction(`[User] Delete User Failed`, props<{error: any}>());

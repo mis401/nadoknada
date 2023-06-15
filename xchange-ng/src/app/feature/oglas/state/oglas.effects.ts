@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { OglasService } from "../services/oglas.service";
-import { prijavaOglasa, neuspesnoPrijavljenOglas, neuspesnoVraceniOglasi, neuspesnoZapracenOglas, pretraziOglase, selektovanOglas, uspesnoPrijavljenOglas, uspesnoVraceniOglasi, uspesnoZapracenOglas, zapratiOglas, ponudaOglasa, uspesnaPonuda, neuspesnaPonuda, ucitajKategorije, ucitavanjeKategorijaSuccess, ucitavanjeKategorijaFail, odabranaKategorija, oglasiKategorijeUcitani } from "./oglas.actions";
+import { prijavaOglasa, neuspesnoPrijavljenOglas, neuspesnoVraceniOglasi, neuspesnoZapracenOglas, pretraziOglase, selektovanOglas, uspesnoPrijavljenOglas, uspesnoVraceniOglasi, uspesnoZapracenOglas, zapratiOglas, ponudaOglasa, uspesnaPonuda, neuspesnaPonuda, ucitajKategorije, ucitavanjeKategorijaSuccess, ucitavanjeKategorijaFail, odabranaKategorija, oglasiKategorijeUcitani, ucitajOglasPoIdSuccess, ucitajOglasPoId, ucitajNajpoznatijeOglase, ucitavanjeNajpoznatijihOglasaSuccess, ucitavanjeNajpoznatijihOglasaFail } from "./oglas.actions";
 import { catchError, map, of, switchMap, take, takeUntil, tap } from "rxjs";
 
 @Injectable()
@@ -65,6 +65,22 @@ export class OglasEffects {
             tap((oglasi) => console.log("TAP " + oglasi)),
             map((oglasi) => oglasiKategorijeUcitani({oglasi})),
             catchError((error) => of(neuspesnoVraceniOglasi({error})))
+        ))
+    ))
+
+    ucitajOglasPoId$ = createEffect( () => this.actions$.pipe(
+        ofType(ucitajOglasPoId),
+        switchMap((action) => this.services.ucitajOglasPoId(action.id).pipe(
+            map((oglas) => ucitajOglasPoIdSuccess({oglas})),
+            catchError((error) => of(neuspesnoVraceniOglasi({error})))
+        ))
+    ))
+
+    ucitavanjeNajpoznatijihOglasa$ = createEffect( () => this.actions$.pipe(
+        ofType(ucitajNajpoznatijeOglase),
+        switchMap((action) => this.services.ucitajNajpoznatijeOglase().pipe(
+            map((oglasi) => ucitavanjeNajpoznatijihOglasaSuccess({oglasi})),
+            catchError((error) => of(ucitavanjeNajpoznatijihOglasaFail({error})))
         ))
     ))
 

@@ -1,0 +1,20 @@
+<div>
+    <mat-card *ngIf="komentar.tekst != '' else loading">
+        <mat-card-header>
+            <mat-card-title>Ocena {{komentar.ocena}}</mat-card-title>
+            <mat-card-subtitle>{{komentar.datumPostavljanja | date:'mediumDate'}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p>{{komentar.tekst}}</p>
+        </mat-card-content>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+            <p>Komentar postavio: <span style="font-weight: bold;">{{komentar.ostavioKomentarUsername}}</span></p>
+        </mat-card-content>
+    </mat-card>
+    <ng-template #loading>
+        <div class="load">
+            <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+        </div>
+    </ng-template>
+</div>

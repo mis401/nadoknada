@@ -25,7 +25,8 @@ export class MojiOglasiComponent implements OnInit {
     })
   }
   selektovanOglas(ElemRef: OglasPreviewComponent){
+    console.log("Selektovan je" + ElemRef.oglas?.id);
     this.store.dispatch(selektovanOglas({oglas: ElemRef.oglas!}))
-    this.router.navigate([`/oglas`]);
+    this.router.navigate([`/oglasi/${ElemRef.oglas?.id}`]);
   }
 }

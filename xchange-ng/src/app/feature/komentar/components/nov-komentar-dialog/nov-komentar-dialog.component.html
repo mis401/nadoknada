@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>
+    Nov komentar na {{data.userKomSeOstavljaUsername}}
+</h1>
+<mat-dialog-content class="forma">
+    <mat-form-field>
+        <mat-label>Ocena</mat-label>
+        <input matInput [(ngModel)]="komentar.ocena" type="number" min="1" max="10" required>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Tekst</mat-label>
+        <textarea matInput [(ngModel)]="komentar.tekst" required></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button color="basic" mat-dialog-close>Odustani</button>
+    <button mat-button color="primary" [mat-dialog-close]="komentar" cdkAutoFocus>Postavi</button>
+</mat-dialog-actions>
+

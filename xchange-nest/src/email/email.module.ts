@@ -11,7 +11,11 @@ const transporter = nodemailer.createTransport({
     user: 'xchange2023@hotmail.com',
     pass: 'posadam84xchange',
   },
+  pool: true,
+  maxConnections: 3,
+  port: 587,
 });
+
 @Global()
 @Module({
   controllers: [EmailController],

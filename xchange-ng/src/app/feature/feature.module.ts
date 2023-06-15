@@ -11,6 +11,7 @@ import { OglasComponent } from './oglas/components/oglas/oglas.component';
 import { OglasPreviewComponent } from './oglas/components/oglas-preview/oglas-preview.component';
 import { ChatModule } from './chat/chat.module';
 import { KorisnickaPodrskaModule } from './korisnicka-podrska/korisnicka-podrska.module';
+import { KomentarModule } from './komentar/komentar.module';
 
 
 
@@ -24,6 +25,7 @@ import { KorisnickaPodrskaModule } from './korisnicka-podrska/korisnicka-podrska
     OglasModule,
     ChatModule,
     KorisnickaPodrskaModule,
+    KomentarModule,
   ],
   exports: [OglasListComponent,
       OglasComponent,

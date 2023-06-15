@@ -1,0 +1,9 @@
+<div class="wrapper">
+    <h1 mat-dialog-header>Prijava </h1>
+    <mat-dialog-content *ngIf="oglas">
+        <app-oglas [inputOglas]="oglas" [vlasnik]="true"></app-oglas>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close>Zatvori</button>
+    </mat-dialog-actions>
+</div>

@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { RouterModule } from '@angular/router';
+import { KomentarModule } from '../komentar/komentar.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -41,6 +43,8 @@ import { RouterModule } from '@angular/router';
     RouterModule,
     FormsModule,
     MatProgressSpinnerModule,
+    KomentarModule,
+    MatDialogModule,
   ],
   providers: [NbStatusService, NbFocusMonitor], 
 })

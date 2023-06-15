@@ -131,9 +131,9 @@ model Poruka {
   
   konverzacijaId String?  @db.ObjectId
   konverzacija   Konverzacija?  @relation(fields: [konverzacijaId], references: [id])
-  senderId       String   @db.ObjectId
+  senderId       String?   @db.ObjectId
   sender         User? @relation("PoslaoPoruku", fields: [senderId], references: [id])
-  receiverId     String   @db.ObjectId
+  receiverId     String?   @db.ObjectId
   receiver       User? @relation("PrimioPoruku", fields: [receiverId], references: [id])
 }
 
@@ -153,7 +153,7 @@ model Prituzba {
   id        String      @id @default(auto()) @map("_id") @db.ObjectId
   ishod     String      @default("neresena")
   tema      String?
-  resilaKorisnickaPodrska   String[] @db.ObjectId
+  resilaKorisnickaPodrska   String? @db.ObjectId
   resava                    User?      @relation("ResavaPrituzbe", fields: [resilaKorisnickaPodrska], references: [id])
 
   ostavljaKorisnikId        String @db.ObjectId  

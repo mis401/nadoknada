@@ -4,6 +4,9 @@ import { Conversation } from '../model/conversation.model';
 import { Message } from '../model/poruka.model';
 import { BehaviorSubject, Observable, Subscription, from, take } from 'rxjs';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { NovKomentarDialogComponent } from 'src/app/feature/komentar/components/nov-komentar-dialog/nov-komentar-dialog.component';
+import { KomentarService } from 'src/app/feature/komentar/services/komentar.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,7 +24,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     datumPocetka: new Date(),
     userIds: []
   }
-  constructor(protected chatService: ChatService, private route: ActivatedRoute, private router: Router) {
+  constructor(protected chatService: ChatService, 
+    private route: ActivatedRoute, 
+    private router: Router,
+    public dialog: MatDialog,
+    private komentarService: KomentarService) {
   }
   public username : string = '';
   other: string = '';
@@ -94,5 +101,24 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.messageLimit$.next(newMessage);
     this.messageText = '';
     console.log(this.konverzacija.poruke);
+  }
+
+  oceni(){
+    console.log(this.username, this.other);
+    const novKomentarDialog = this.dialog.open(NovKomentarDialogComponent, {
+      data: {
+        userKojiOstavljaId: this.username,
+        userKomSeOstavljaId: this.other,
+        userKomSeOstavljaUsername: this.other
+      }
+    })
+    novKomentarDialog.afterClosed().subscribe( {
+      next: (result) => {
+        if (result != null && result != undefined) {
+          console.log(result);
+          this.komentarService.dodajKomentar(result).subscribe({});
+        }
+      }
+    })
   }
 }

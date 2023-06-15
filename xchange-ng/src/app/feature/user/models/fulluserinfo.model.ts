@@ -1,7 +1,7 @@
 
 export interface FullUserInfo {
     username: string;
-    password?: string;
+    password: string;
     hash:string;
     token: string;
     ime: string;

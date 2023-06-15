@@ -85,13 +85,14 @@
                 </mat-card-content>
                 <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
                     <div class="slika">
-                        <input style="margin-bottom: 15px"formControlName="slika" type="file" accept="image/*" (change)="onFileSelected($event)" required/>
+                        <input style="margin-bottom: 15px"formControlName="slika" type="file" accept="image/*"  (change)="onFileSelected($event)" required/>
                         <mat-error *ngIf="slika == null">
                             Slika je obavezna
                         </mat-error>
-                        <mat-card *ngIf="slika">
-                            <img mat-card-image [src]="slika" alt="slika" width="200" height="200">
-                        </mat-card>
+                         <div>
+                             <img *ngIf="slika" mat-card-image [src]="slika" alt="slika" class="slika-element">
+                         </div>
+                        
                     </div>
                 </form>
             </div>

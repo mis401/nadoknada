@@ -44,7 +44,7 @@ export class OglasController
         console.log(oglas);
         oglas.kategorijeIds = (oglas.kategorijeIds as unknown as string).split(',');
         oglas.kreiraoKorisnikId = user.id;
-        await this.oglasService.dodaj(oglas);
+        return await this.oglasService.dodaj(oglas);
     }
     // dodaj(@Body("") dtoOglas:OglasDto)
     // {
@@ -175,4 +175,13 @@ export class OglasController
         return await this.oglasService.vratiOglaseKategorije(kategorija);
     }
 
+    @Get('ucitajOglasPoId/:id')
+    async vratiOglasPoId(@Param('id') id: string){
+        return await this.oglasService.vratiOglasPoId(id);
+    }
+
+    @Get(`najpoznatijiOglasi`)
+    async vratiNajpoznatijeOglase(){
+        return await this.oglasService.vratiNajpoznatijeOglase();
+    }
 }

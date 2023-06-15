@@ -1,13 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, take, zip } from 'rxjs';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Subscription, combineLatestWith, take, zip } from 'rxjs';
 import { Oglas } from '../../models/oglas.model';
 import { OglasService } from '../../services/oglas.service';
 import { OglasState } from '../../state/oglas.state';
 import { Store } from '@ngrx/store';
-import { ponudaOglasa, prijavaOglasa, selektovanOglas, zapratiOglas } from '../../state/oglas.actions';
+import { ponudaOglasa, prijavaOglasa, selektovanOglas, ucitajOglasPoId, zapratiOglas } from '../../state/oglas.actions';
 import { kategorijaListSelector, oglasSelector } from '../../state/oglas.selectors';
 import { RoundOffsets } from '@popperjs/core/lib/modifiers/computeStyles';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AppState } from 'src/app/state/app.state';
 import { selectUser } from 'src/app/feature/user/state/user.selector';
 import jwtDecode from 'jwt-decode';
@@ -17,6 +17,9 @@ import { PrijaviOglasDialogComponent } from '../prijavi-oglas-dialog/prijavi-ogl
 import { PonudaDialogComponent } from '../ponuda-dialog/ponuda-dialog.component';
 import { ChatService } from 'src/app/feature/chat/services/chat.service';
 import { Kategorija } from '../../models/kategorija.model';
+import { SlikaDialogComponent } from '../slika-dialog/slika-dialog.component';
+import { envLocal } from 'src/env';
+import { PrihvatanjePonudaDialogComponent } from '../prihvatanje-ponuda-dialog/prihvatanje-ponuda-dialog.component';
 
 @Component({
   selector: 'app-oglas',
@@ -26,28 +29,29 @@ import { Kategorija } from '../../models/kategorija.model';
 export class OglasComponent implements OnInit, OnDestroy {
   constructor(private oglasService: OglasService,
     private chatService: ChatService,
-     private store: Store<AppState>, 
-     private router: Router,
-     public dialog: MatDialog){}
+    private store: Store<AppState>, 
+    private router: Router,
+    public dialog: MatDialog,
+    private route: ActivatedRoute){}
   // private oglasSub : Subscription = new Subscription();
   // private userSub : Subscription = new Subscription();
+  @Input()
+  inputOglas: Oglas | null = null;
   jointStateSub$ : Subscription = new Subscription();
   oglas$ = this.store.select(oglasSelector);
   userId$ = this.store.select(selectUser);
   oglas: Oglas | null = null;
+  oglasId: string | null = null;
   userId: string | undefined;
   username='';
-  kategorije : Kategorija[] = [];
-  kategorija: Kategorija = {
-    id: '',
-    naziv: ''
-  }
   redirect(){
     this.router.navigate(['/home']);
   }
   prati: boolean = false;
+  @Input()
+  vlasnik: boolean = false;
 
-  jointState$ = zip(this.oglas$, this.userId$);
+  //jointState$ = zip(this.oglas$, this.userId$);
 
   ponudi(){
     const ponudaDialog = this.dialog.open(PonudaDialogComponent);
@@ -56,6 +60,21 @@ export class OglasComponent implements OnInit, OnDestroy {
         console.log(`Ponuda je ${result}`);
         if(result !== ''){
           this.store.dispatch(ponudaOglasa({oglas: this.oglas!, ponuda: result}));
+        }
+      }
+    })
+  }
+  vidiPonude(){
+    const ponudeDialog = this.dialog.open(PrihvatanjePonudaDialogComponent, {data: {oglasId: this.oglasId}});
+    ponudeDialog.afterClosed().subscribe({
+      next: (result) => {
+        if (result){
+          console.log(`Ponuda je ${result}`);
+          this.oglasService.prihvatiPonudu(result).subscribe({
+            next: (res) => {
+              console.log(res);
+            }
+          })  
         }
       }
     })
@@ -72,7 +91,6 @@ export class OglasComponent implements OnInit, OnDestroy {
   }
 
   zaprati() {
-    console.log(this.oglas?.id, this.username);
     this.store.dispatch(zapratiOglas({oglas: this.oglas!, user: this.username}));
   }
   
@@ -89,39 +107,52 @@ export class OglasComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit(): void {
-    this.store.select(kategorijaListSelector).pipe(
-      take(1)
-    ).subscribe({
-      next: (kategorije) => {
-        this.kategorije = kategorije;
-      }
-    })
-    this.jointStateSub$ = this.jointState$.subscribe({
-      next: ([oglas, userId]) => {
-        if(userId){
-          this.userId=jwtDecode<JWT>(userId).sub;
-        if(oglas){
-          this.oglas = oglas;
-          if (!oglas.pretplacujeSeIds)
-          this.oglas.pretplacujeSeIds = [];
-          this.prati = oglas.pretplacujeSeIds!.includes(this.userId);
-          console.log(`debug`);
-          console.log(oglas.kategorijaIds);
-          if (this.oglas.kreiraoKorisnikId == this.userId){
-            this.prati=true;
-          }
-          let index = this.kategorije.findIndex(kategorija => kategorija.id == oglas.kategorijaIds!.at(0));
-          this.kategorija=this.kategorije[index];
-          console.log("Kategorija" + this.kategorija.naziv);
-        }
-      }
-      }
-    })
+  otvoriSliku(){
+    const dialogRef = this.dialog.open(SlikaDialogComponent, {
+      data: {url: `${envLocal.api}/slika/imeSlike/${this.oglas!.slike}`}});
+  }
 
-    this.oglasService.vidjen(this.oglas!.id);
-    console.log(this.userId);
-    console.log(this.oglas!.id)
+  ngOnInit(): void {
+    console.log(this.route.snapshot)
+    if(this.inputOglas != null)
+      this.oglas = this.inputOglas;
+    else{ 
+      this.userId$.pipe(
+        combineLatestWith(this.oglas$),
+      ).subscribe({
+        next: ([userToken, oglas]) => {
+          if(userToken){
+            this.userId=jwtDecode<JWT>(userToken).sub;
+            if (oglas == null){
+              this.route.params.pipe(
+                take(1)
+              ).subscribe((params : Params) => {
+                this.oglasId=params['id'];
+                this.store.dispatch(ucitajOglasPoId({id: this.oglasId!}))
+              })
+            }
+            if(oglas !== null)
+            {
+              this.oglas = {...oglas};
+              console.log("Ucitan u this.oglas: " + this.oglas);
+              if (!oglas.pretplacujeSeIds)
+              this.oglas.pretplacujeSeIds = [];
+              this.prati = oglas.pretplacujeSeIds!.includes(this.userId);
+              console.log(`debug`);
+              console.log(this.oglas.kategorijaIds);
+              if (this.oglas.kreiraoKorisnikId == this.userId){
+                this.vlasnik=true;
+              }
+              this.oglasService.vidjen(this.oglas!.id);
+              console.log("vidjen");
+              if(this.oglas.kategorije == null)
+                this.oglas!.kategorije = [];
+              
+            }
+          }
+        }
+      })
+    }
   }
   // private initSubs(){
   //   this.initOglasSub();

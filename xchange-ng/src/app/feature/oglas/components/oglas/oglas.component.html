@@ -1,7 +1,44 @@
-<div class="host-wrapper" *ngIf="oglas">
+<!-- <div class="host-wrapper" *ngIf="oglas else loadingOglas">
+    <div class="oglas-wrapper">
+        <div class="tekst-slika-wrapper">
+            <div class="tekst">
+                <h2>{{oglas.naziv}}</h2>
+                <h3 *ngFor="let k of oglas.kategorije">Kategorija: {{k.naziv}}</h3>
+                <h4>Oglas postavio: {{oglas.kreiraoKorisnik!.username}}</h4>
+                <div class="oglas-content">
+                    <div class="oglas-tekst">
+                        <div>
+                            <p>Kvalitet: {{oglas.kvalitet}}</p>
+                            <p>(Broj poseta {{oglas.brojPoseta}})</p>
+                            <p>{{oglas.datumKreiranja | date:'mediumDate'}}</p>
+                        </div>
+                        <div class="oglas-opis">
+                            <p>Opis:{{oglas.opis}}</p>
+                        </div>
+                        <div class="oglas-ponuda">
+                            <p>{{oglas.ponuda}}</p>
+                        </div>
+                    </div>
+                </div>
+            <div class="slika">
+
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #loadingOglas>
+    <div class="load">
+        <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+    </div>
+</ng-template> -->
+
+
+
+<div class="host-wrapper" *ngIf="oglas else loadingOglas">
     <div class="oglas-wrapper">
         <h2>{{oglas.naziv}}</h2>
-        <h4>Kategorija: {{kategorija.naziv}}</h4>
+        <h3 *ngFor="let k of oglas.kategorije">Kategorija: {{k.naziv}}</h3>
+        <h4>Oglas postavio: {{oglas.kreiraoKorisnik!.username}}</h4>
         <div class="oglas-content">
             <div class="oglas-tekst-i-slika">
                 <div class="oglas-tekst">
@@ -17,24 +54,35 @@
                         <p>{{oglas.ponuda}}</p>
                     </div>
                 </div>
-                <div>
-                    <img src="{{oglas.slike}}" alt="slika">
+                <div class="slika-div">
+                    <img src="http://localhost:3002/slika/imeSlike/{{oglas.slike}}" (click)="otvoriSliku()" class="slika" alt="slika">
                 </div>
             </div>
         </div>
         <div class="akcije">
-            <button mat-icon-button color="warn" [disabled]="prati" (click)="zaprati()">
+            <button mat-icon-button color="warn" [disabled]="prati || vlasnik" (click)="zaprati()" cdkAutoFocus>
               <mat-icon>favorite</mat-icon>
             </button>
-            <button mat-raised-button color="primary" (click)="ponudi()">Unesi ponudu</button>
-            <button mat-raised-button color="warn" (click)="prijavi()">Prijavi</button>
-            <button mat-icon-button color="basic" (click)="chat()">
+            <button mat-raised-button color="primary" [disabled]="vlasnik" (click)="ponudi()">Unesi ponudu</button>
+            <button mat-raised-button color="warn" [disabled]="vlasnik" (click)="prijavi()">Prijavi</button>
+            <button mat-icon-button color="basic" [disabled]="vlasnik" (click)="chat()">
                 <mat-icon>chat</mat-icon>
             </button>
         </div>
         <div *ngIf="oglas.kreiraoKorisnikId===userId" class="owner">
+            <button mat-raised-button color="primary" (click)="vidiPonude()">Vidi ponude</button>
             <button mat-raised-button color="primary" (click)="izmeni()">Izmeni</button>
             <button mat-raised-button color="warn" (click)="obrisi()">Obrisi</button>
         </div>
     </div>
+</div>
+<mat-divider></mat-divider>
+<ng-template #loadingOglas>
+    <div class="load">
+        <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+    </div>
+</ng-template>
+
+<div *ngIf="oglas">
+    <app-komentar-list class="komentari" [userId]="oglas.kreiraoKorisnikId!"></app-komentar-list>
 </div>

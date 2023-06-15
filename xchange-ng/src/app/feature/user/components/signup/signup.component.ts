@@ -15,21 +15,26 @@ import { signupUser } from '../../state/user.actions';
 })
 export class SignupComponent implements OnInit, OnDestroy {
 
-  user: FullUserInfo = {} as FullUserInfo;
+  user: FullUserInfo = {
+    username: '',
+    password: '',
+    hash: '',
+    token: '',
+    ime: '',
+    prezime: '',
+    grad: '',
+    datum_rodjenja: new Date(),
+    datum_registracije: new Date(),
+    broj_telefona: '',
+    email: ''
+  }
+
   private userSub: Subscription = new Subscription();
   private initSubs(){
     this.initUserSub();
   }
   private initUserSub(){
-    this.userSub = this.store.select(selectUser).subscribe({
-      next: (user) => {
-        if (user != ''){
-          this.user.token = user;
-          localStorage.setItem('token', this.user.token);
-          this.router.navigate([`/home`]);
-        }
-      }
-    });
+
   }
   constructor(private store: Store<UserState>, private router: Router) { }
 
@@ -44,5 +49,6 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.user.datum_rodjenja = new Date(this.user.datum_rodjenja);
     this.store.dispatch(signupUser({user: this.user}));
     localStorage.setItem('token', this.user.token);
+    this.router.navigate(['/home']);
   }
 }

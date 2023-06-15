@@ -32,10 +32,12 @@ import { ChatComponent } from './feature/chat/components/chat/chat.component';
 import { MojiOglasiComponent } from './feature/user/components/moji-oglasi/moji-oglasi.component';
 import { ZapraceniOglasiComponent } from './feature/user/components/zapraceni-oglasi/zapraceni-oglasi.component';
 import { PrijaveComponent } from './feature/korisnicka-podrska/components/prijave/prijave.component';
+import { PonudaComponent } from './ponuda/ponuda.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PonudaComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,7 @@ import { PrijaveComponent } from './feature/korisnicka-podrska/components/prijav
       {path: 'login', component: LoginComponent},
       {path: 'signup', component: SignupComponent},
       {path: 'napravioglas', component: NovOglasComponent},
-      {path: 'oglas', component: OglasComponent},
+      {path: 'oglasi/:id', component: OglasComponent},
       {path: 'profil', component: UserProfileComponent},
       {path: 'home', component: HomeComponent},
       {path: 'chat', component: ChatListComponent, children: [
@@ -61,7 +63,8 @@ import { PrijaveComponent } from './feature/korisnicka-podrska/components/prijav
       {path: 'korisnicka-podrska', component: PrijaveComponent},
       {path: '', redirectTo: '/home', pathMatch: 'full'},
       {path: '**', redirectTo: '/'}
-    ]),
+    ],
+    {scrollPositionRestoration: 'enabled'}),
     NgbModule,
     BrowserAnimationsModule,
     JwtModule,

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store"
 import { initialPrijavaState } from "./prijava.state"
-import { ucitajPrijaveFail, ucitajPrijaveSuccess } from "./prijava.actions"
+import { ucitajPrijaveFail, ucitajPrijaveSuccess, ukloniPrijavu } from "./prijava.actions"
 
 export const prijavaReducer = createReducer(
     initialPrijavaState,
@@ -14,6 +14,12 @@ export const prijavaReducer = createReducer(
         return {
             ...state,
             error: error
+        }
+    }),
+    on(ukloniPrijavu, (state, {id}) => {
+        return {
+            ...state,
+            prijave: state.prijave.filter(prijava => prijava.id !== id)
         }
     })
 )

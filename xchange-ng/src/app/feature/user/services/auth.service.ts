@@ -47,6 +47,12 @@ export class AuthService {
 
   deleteUser(user:string): Observable<any>{
     const url = `${envLocal.api}/auth/obrisi`;
-    return this.http.delete<any>(`${url}/user`);
+    return this.http.delete<any>(`${url}`);
+  }
+
+  updateUser(user: FullUserInfo): Observable<FullUserInfo> {
+    const url = `${envLocal.api}/auth/izmeni`;
+    return this.http.patch<FullUserInfo>(url, {...user}).pipe(
+    );
   }
 }

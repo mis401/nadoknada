@@ -11,12 +11,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { OglasModule } from '../oglas/oglas.module';
+import { OglasDialogComponent } from './components/oglas-dialog/oglas-dialog.component';
 
 
 
 @NgModule({
   declarations: [
-    PrijaveComponent
+    PrijaveComponent,
+    OglasDialogComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +31,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatInputModule,
     MatIconModule,
     MatFormFieldModule,
-    
+    MatDialogModule,
+    OglasModule,
+    MatIconModule,
+    MatButtonModule,
   ]
 })
 export class KorisnickaPodrskaModule { 

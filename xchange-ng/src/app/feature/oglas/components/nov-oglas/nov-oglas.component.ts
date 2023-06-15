@@ -10,6 +10,7 @@ import { take } from 'rxjs';
 import jwt_decode from 'jwt-decode';
 import { AuthToken } from 'src/app/feature/user/models/authtoken.model';
 import { JWT } from 'src/app/feature/user/models/jwt.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nov-oglas',
@@ -25,6 +26,7 @@ export class NovOglasComponent implements OnInit {
     opis: '',
     datumKreiranja: new Date(),
     ponuda: '',
+    stanjeOglasa: 'aktivan',
     aktivanOglas: true,
     resenOglas: false,
     obrisanOglas: false,
@@ -34,11 +36,15 @@ export class NovOglasComponent implements OnInit {
     kreiraoKorisnikId: '',
     kategorijaIds: [],
     slike: [],
+    slikaURL: '',
   } 
   slika: string | null = null;
   user: string = '';
   kategorije: Kategorija[] = [];
-  constructor(private store: Store<AppState>, private service: OglasService, public formBuilder: FormBuilder) { }
+  constructor(private store: Store<AppState>, 
+    private service: OglasService, 
+    public formBuilder: FormBuilder,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.store.select(selectUser).pipe(take(1)).subscribe({
@@ -90,8 +96,14 @@ export class NovOglasComponent implements OnInit {
     formData.append('kreiraoKorisnikId', jwt_decode<JWT>(this.user).sub);
     console.log(formData);
     this.service.dodajOglas(formData).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: (oglas) => {
+        console.log(oglas);
+        if(oglas != null && oglas.id != null && oglas.id != ''){
+          this.router.navigate(['/oglasi', oglas.id]);
+        }
+        else{
+          alert("Greska pri dodavanju oglasa");
+        }
       }
     })
   }//DA LI MOZE DA POSALJE VISE KATEGORIJA I PRIMI VISE KATEGORIJA  

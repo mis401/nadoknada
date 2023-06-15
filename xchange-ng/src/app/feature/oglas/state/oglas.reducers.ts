@@ -1,6 +1,6 @@
 import { Action, State, createReducer, on } from "@ngrx/store";
 import { InitialOglasState, OglasState } from "./oglas.state";
-import { neuspesnoPrijavljenOglas, neuspesnoZapracenOglas, odabranaKategorija, oglasiKategorijeUcitani, selektovanOglas, ucitavanjeKategorijaSuccess, uspesnaPonuda, uspesnoPrijavljenOglas, uspesnoVraceniOglasi, uspesnoZapracenOglas } from "./oglas.actions";
+import { neuspesnoPrijavljenOglas, neuspesnoZapracenOglas, odabranaKategorija, oglasiKategorijeUcitani, selektovanOglas, ucitajOglasPoIdSuccess, ucitavanjeKategorijaSuccess, ucitavanjeNajpoznatijihOglasaFail, ucitavanjeNajpoznatijihOglasaSuccess, uspesnaPonuda, uspesnoPrijavljenOglas, uspesnoVraceniOglasi, uspesnoZapracenOglas } from "./oglas.actions";
 import { InitialUserState } from "../../user/state/user.state";
 
 
@@ -45,6 +45,18 @@ export const oglasReducer = createReducer(
     on(oglasiKategorijeUcitani, (state, {oglasi}) => ({
         ...state,
         oglasList: oglasi
+    })),
+    on(ucitajOglasPoIdSuccess, (state, {oglas}) => ({
+        ...state,
+        oglas: oglas
+    })),
+    on(ucitavanjeNajpoznatijihOglasaSuccess, (state, {oglasi}) => ({
+        ...state,
+        oglasList: oglasi
+    })),
+    on(ucitavanjeNajpoznatijihOglasaFail, (state, {error}) => ({
+        ...state,
+        error: error
     })),
 
 );

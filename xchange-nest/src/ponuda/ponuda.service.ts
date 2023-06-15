@@ -52,4 +52,48 @@ export class PonudaService
             }
         }
     }
+
+    async ponudeNaOglas(oglasId:string, userId: string) {
+        const ponude = await this.prismaS.ponuda.findMany({
+            where: {
+                oglasId,
+            },
+            include: {
+                oglas: true,
+                koJePoslaoPonudu: true,
+            },
+        });
+        const authPonude = ponude.filter((ponuda) => ponuda.oglas.kreiraoKorisnikId === userId);
+        
+        return authPonude;
+    }
+
+    async prihvatiPonudu(ponudaId:string,userId: string){
+        const ponuda = await this.prismaS.ponuda.findUnique({
+            where: {
+                id: ponudaId,
+            },
+            include:{
+                oglas:true,
+            }
+        }
+        );
+        await this.prismaS.oglas.update({
+            where:{
+                id:ponuda.oglasId,
+            },
+            data:{
+                stanjeOglasa:"resen"
+            }
+        });
+        await this.prismaS.ponuda.update({
+            where:{
+                id:ponudaId,
+            },
+            data:{
+                prihvacenaNaOglas:{connect:{id:ponuda.oglasId}}
+            }
+        });
+        return ponuda;
+    }
 }

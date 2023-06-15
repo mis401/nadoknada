@@ -12,7 +12,7 @@ import { User } from '@prisma/client';
 export class KomentarController 
 {
     constructor(private komentarService:KomentarService){}
-
+    @UseGuards(AuthGuard("jwt"))
     @Post("dodajKomentar")
     dodaj(@Body("") dtoKomentar:KomentarDto)
     {
@@ -38,6 +38,10 @@ export class KomentarController
     {
         return this.komentarService.izmeni(dto.id,dto.text,dto.ocena);
     }
-    
+    @Get("sviKomentariNaKorisnika/:id")
+    async getKomentariNaKorisnika(@Param("id") userId:string)
+    {
+        return await this.komentarService.getKomentariNaKorisnika(userId);
+    }
 }
 

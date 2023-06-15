@@ -27,6 +27,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 50px;
 }
 
 .owner{
@@ -34,4 +35,33 @@
     justify-content: flex-end;
     margin-top: 25px;
     column-gap: 10px;
+}
+
+.slika-div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slika{
+    width: 200px;
+    height: auto;
+}
+
+.spinner{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+mat-divider{
+    width: 100%;
+}
+
+.komentari{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    justify-content: center;
 }

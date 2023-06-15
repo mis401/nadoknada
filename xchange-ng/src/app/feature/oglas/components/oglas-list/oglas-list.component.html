@@ -1,7 +1,13 @@
 <div class="full-wrap">
-    <div class="search-results">
+    <div *ngIf="oglasi.length>0 else noRes" class="search-results">
         <div *ngFor="let oglas of oglasi" class="result">
-            <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}" [oglas]="oglas"></app-oglas-preview>
+            <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}"  [oglas]="oglas"></app-oglas-preview>
         </div>
     </div>
+
+    <ng-template #noRes>
+        <div class="no-results">
+            <h1>Nema takvih oglasa!</h1>
+        </div>
+    </ng-template>
 </div>

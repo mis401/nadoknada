@@ -1,0 +1,10 @@
+<div  *ngIf="komentari != [] else loading">
+    <div class="komentari-list">
+        <app-komentar style="width: 500px;" *ngFor="let komm of komentari" [komentar]="komm"></app-komentar>
+    </div>
+</div>
+<ng-template #loading>
+    <div class="load">
+        <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+    </div>
+</ng-template>

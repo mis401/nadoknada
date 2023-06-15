@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Param, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { UserAuthLogin, UserAuthSignInDto } from "../dto";
+import { UserAuthLogin, UserAuthSignInDto, UserIzmenaDto } from "../dto";
 import { Roles } from "./decorator/roles.decorator";
 import { Role } from "./role.enum";
 import { AuthGuard } from "@nestjs/passport";
@@ -26,6 +26,7 @@ export class AuthController
     {
         return this.authServise.login(dtoUser);
     }
+    
     @Roles(Role.ADMIN)
     @Delete("obrisi/:id")
     obrisiAdmin(@Param("id") id:string)
@@ -39,6 +40,15 @@ export class AuthController
     obrisiUser(@GetUser() user:User)
     {
         return this.authServise.obrisi(user.id);
+    }
+
+    @UseGuards(AuthGuard("jwt"))
+    @Roles(Role.USER)
+    @UseGuards(RolesGuard)
+    @Patch("izmeni")
+    izmeniUser(@Body("") dtoUser:UserIzmenaDto,@GetUser() user:User)
+    {
+        return this.authServise.izmeniUsera(user,dtoUser);
     }
 
 }

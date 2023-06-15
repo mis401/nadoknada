@@ -1,0 +1,27 @@
+<div *ngIf="oglas else loading">
+    <h1 mat-dialog-title>Ponude za oglas {{oglas.naziv}} </h1>
+    <mat-dialog-content>
+
+            <mat-label>Ponude</mat-label>
+            <mat-card *ngFor="let ponuda of ponude" (click)="select(ponuda.id)" style="margin-bottom: 5px;">
+                <mat-card-header>
+                    <mat-card-title>{{ponuda.Naslov}}</mat-card-title>
+                    <mat-card-subtitle>{{ponuda.koJePoslaoPonudu!.username}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ponuda.opis}}</p>
+                </mat-card-content>
+            </mat-card>
+            
+
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-button mat-dialog-close>Odustani</button>
+        <button mat-button [mat-dialog-close]="odabranaPonuda" cdkFocusInitial>Prihvati</button>
+    </mat-dialog-actions>
+</div>
+<ng-template #loading>
+    <div class="load">
+        <mat-progress-spinner mode="indeterminate" class="spinner"></mat-progress-spinner>
+    </div>
+</ng-template>

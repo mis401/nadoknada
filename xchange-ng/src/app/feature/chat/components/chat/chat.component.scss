@@ -1,33 +1,105 @@
-.chat{
-    border: 1px solid black;
+// .chat{
+//     border: 1px solid black;
+//     width: 100%;
+// }
+
+// .chat-msg-wrap{
+
+//     border: 1px solid black;
+//     width: 100%;
+// }
+
+// .chat-msg{
+//     width: fit-content;
+
+//     border: 1px solid black;
+// }
+// .chat-card{
+//     display: flex;
+//     flex-direction: column;
+// }
+
+// .receiver{
+//     display: flex;
+//     justify-content: flex-start;
+// }
+
+// .sender{
+//     display: flex;
+//     justify-content: flex-end;
+// }
+// mat-card{
+//     width: 50%;
+// }
+
+// mat-divider{
+//     width: 100%;
+// }
+
+.chat {
+    border: 1px solid #ccc;
     width: 100%;
-}
-
-.chat-msg-wrap{
-
-    border: 1px solid black;
+    background-color: #e9f4f2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chat-msg-wrap {
+    
     width: 100%;
-}
-
-.chat-msg{
+    margin-bottom: 10px;
+  }
+  
+  .chat-msg {
     width: fit-content;
-
-    border: 1px solid black;
-}
-.chat-card{
-    display: flex;
-    flex-direction: column;
-}
-
-.receiver{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .receiver {
     display: flex;
     justify-content: flex-start;
-}
-
-.sender{
+  }
+  
+  .receiver .chat-msg {
+    background-color: #b8dfb5;
+    color: #333333;
+  }
+  
+  .sender {
     display: flex;
     justify-content: flex-end;
-}
-mat-card{
-    width: 50%;
-}
+  }
+  
+  .sender .chat-msg {
+    background-color: #d2effc;
+    color: #333333;
+  }
+  
+  .chat-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-poruke {
+    display: flex;
+    align-items: center;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+    margin-right: 10px;
+  }
+  
+  button[type="reset"] {
+    background-color: #2196f3;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 10px 20px;
+  }

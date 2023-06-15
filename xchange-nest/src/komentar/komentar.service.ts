@@ -16,12 +16,18 @@ export class KomentarService
     {
         try
         {
+            const userOstavio = await this.prismaS.user.findUnique({
+                where:{username:dtoKomentar.ostavioKomentar}
+            });
+            const userKomeJeOstavljen = await this.prismaS.user.findUnique({
+                where:{username:dtoKomentar.komeJeOstavljenKomentar}
+            });
             const KreirajKomentar=await this.prismaS.komentar.create({
                 data:{
                     tekst: dtoKomentar.tekst,
                     ocena:dtoKomentar.ocena,
-                    ostavioKomentar:{connect:{id:dtoKomentar.ostavioKomentar}},
-                    komeJeOstavljenKomentar:{connect:{id:dtoKomentar.komeJeOstavljenKomentar}},
+                    ostavioKomentar:{connect:{id:userOstavio.id}},
+                    komeJeOstavljenKomentar:{connect:{id:userKomeJeOstavljen.id}},
                 },
             });
             return KreirajKomentar;
@@ -73,6 +79,29 @@ export class KomentarService
                     ocena,
                 }
             });
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
+    }
+
+    async getKomentariNaKorisnika(userId:string){
+        try
+        {
+            console.log(userId);
+            const komentari=await this.prismaS.komentar.findMany({
+                where:{
+                    userkomeJeOstavljenKomentarId:userId
+                },
+                include: {
+                    ostavioKomentar:true,
+                }
+            });
+            console.log(komentari);
+            const komentariSaKorisnikom = komentari.map(komentar => ({ ...komentar, ostavioKomentarUsername: komentar.ostavioKomentar.username }));
+            console.log(komentariSaKorisnikom);
+            return komentariSaKorisnikom;
         }
         catch(error)
         {

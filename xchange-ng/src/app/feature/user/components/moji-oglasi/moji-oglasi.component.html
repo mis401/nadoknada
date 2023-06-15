@@ -1,7 +1,16 @@
 <div class="full-wrap">
     <div class="search-results">
+        <div *ngFor="let oglas of oglasi">
+            <div class="result" *ngIf="oglas.stanjeOglasa==='aktivan'">
+                <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}" [oglas]="oglas"></app-oglas-preview>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+        <p>Reseni oglasi</p>
         <div *ngFor="let oglas of oglasi" class="result">
-            <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}" [oglas]="oglas"></app-oglas-preview>
+            <div class="result" *ngIf="oglas.stanjeOglasa==='resen'">
+                <app-oglas-preview #ovajOglas (click)="selektovanOglas(ovajOglas)" id="{{oglas.id}}" [oglas]="oglas"></app-oglas-preview>
+            </div>
         </div>
     </div>
 </div>

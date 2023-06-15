@@ -1,6 +1,6 @@
 import { Controller, ForbiddenException, HttpCode, HttpStatus, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { TokenDto, UserAuthLogin, UserAuthSignInDto } from "../dto";
+import { TokenDto, UserAuthLogin, UserAuthSignInDto, UserIzmenaDto } from "../dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import * as argon from "argon2";
 import { User } from "@prisma/client";
@@ -121,6 +121,46 @@ export class AuthService
         catch(error)
         {
             console.log(error);
+        }
+    }
+
+    async izmeniUsera(user:User,dtoUser: UserIzmenaDto)
+    {
+        console.log(dtoUser);
+        let hash = null;
+        if(dtoUser.password != undefined && dtoUser.password != null && dtoUser.password != "")
+            hash = await argon.hash(dtoUser.password);
+        try
+        {
+            const newUser=await this.prismaS.user.update({
+                where:{
+                    id: user.id
+                },
+                data:{
+                    username: dtoUser.username,
+                    hash: hash?? user.hash,
+                    ime:dtoUser.ime,
+                    prezime:dtoUser.prezime,
+                    datum_rodjenja:dtoUser.datum_rodjenja,
+                    datum_registracije:dtoUser.datum_registracije,
+                    email:dtoUser.email,
+                    broj_telefona:dtoUser.broj_telefona,
+                    grad:dtoUser.grad,
+                    role:"user",
+                },
+            });
+            return newUser;
+        }
+        catch(error)
+        {
+            if(error instanceof PrismaClientKnownRequestError)
+            {
+                if(error.code==="P2002") // da hvata samo ako se javlja duplikat  NE RADI ne ulazi u catch
+                {
+                    throw new ForbiddenException("Username is used");
+                }
+            }
+            throw error;
         }
     }
 }

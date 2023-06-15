@@ -4,9 +4,10 @@ import { OglasService } from './oglas.service';
 import { EmailService } from 'src/email/email.service';
 import { EmailController } from 'src/email/email.controller';
 import { EmailModule } from 'src/email/email.module';
+import { SlikaController } from './slika.controller';
 
 @Module({
-  controllers: [OglasController],
+  controllers: [OglasController, SlikaController],
   providers: [OglasService],
 })
 export class OglasModule {}
