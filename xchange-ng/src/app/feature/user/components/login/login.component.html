@@ -5,17 +5,17 @@
       <hr><br>
       <form (ngSubmit)="onSubmit()" ngNativeValidate style="padding: 10px">
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="username">Korisničko ime</label>
           <input
             [(ngModel)]="user.username"
-            name="email"
+            name="username"
             required
             class="form-control"
-            id="email"
-            placeholder="Unesite e-mail">
+            id="username"
+            placeholder="Unesite korisničko ime">
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Šifra</label>
           <input
             [(ngModel)]="user.password"
             name="password"
@@ -25,12 +25,12 @@
             id="password"
             placeholder="Unesite sifru">
         </div>
-        <button type="submit" class="btn btn-primary login-dugmici">Submit</button>
-        <a [routerLink]="['/']" class="btn btn-success login-dugmici">Cancel</a>
+        <button type="submit" class="btn btn-primary login-dugmici">Prijavite se</button>
+        <a [routerLink]="['/']" class="btn btn-success login-dugmici">Odustanite</a>
       </form>
       <p>
-        <span>Don't have an account?&nbsp;</span>
-        <a [routerLink]="['/signup']">Sign up!</a>
+        <span>Nemate nalog?&nbsp;</span>
+        <a [routerLink]="['/signup']">Napravite!</a>
       </p>
     </div>
   </div>

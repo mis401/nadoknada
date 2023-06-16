@@ -48,6 +48,10 @@ export class SignupComponent implements OnInit, OnDestroy {
     console.log(this.user);
     this.user.datum_rodjenja = new Date(this.user.datum_rodjenja);
     this.store.dispatch(signupUser({user: this.user}));
+    if (this.user.token === '') {
+      alert('Neuspešna registracija!');
+      return;
+    }
     localStorage.setItem('token', this.user.token);
     this.router.navigate(['/home']);
   }
