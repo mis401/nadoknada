@@ -42,7 +42,7 @@ export class OglasComponent implements OnInit, OnDestroy {
   userId$ = this.store.select(selectUser);
   oglas: Oglas | null = null;
   oglasId: string | null = null;
-  userId: string | undefined;
+  userId: string = '';
   username='';
   redirect(){
     this.router.navigate(['/home']);
@@ -110,50 +110,107 @@ export class OglasComponent implements OnInit, OnDestroy {
   otvoriSliku(){
     const dialogRef = this.dialog.open(SlikaDialogComponent, {
       data: {url: `${envLocal.api}/slika/imeSlike/${this.oglas!.slike}`}});
+    }
+    
+  obrisi(){
+    this.oglasService.obrisiOglas(this.oglasId!).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.router.navigate(['/home']);
+      }
+    })
   }
 
+  izmeni(){
+    this.router.navigate([`/oglasi/izmeni/${this.oglasId}`]);
+  }
+
+
   ngOnInit(): void {
-    console.log(this.route.snapshot)
-    if(this.inputOglas != null)
+    if(this.inputOglas!=null)
       this.oglas = this.inputOglas;
-    else{ 
-      this.userId$.pipe(
-        combineLatestWith(this.oglas$),
+    else{
+      this.oglas$.pipe(
+        combineLatestWith(this.userId$),
       ).subscribe({
-        next: ([userToken, oglas]) => {
-          if(userToken){
+        next: ([oglas, userToken]) => {
+          if(userToken != '' && userToken != null){
             this.userId=jwtDecode<JWT>(userToken).sub;
-            if (oglas == null){
-              this.route.params.pipe(
-                take(1)
-              ).subscribe((params : Params) => {
-                this.oglasId=params['id'];
-                this.store.dispatch(ucitajOglasPoId({id: this.oglasId!}))
-              })
+          }
+          if(oglas == null) {
+            this.route.params.pipe(
+              take(1)
+            ).subscribe((params : Params) => {
+              this.oglasId=params['id'];
+              this.store.dispatch(ucitajOglasPoId({id: this.oglasId!}))
+            })
+          }
+          if(oglas != null && oglas != undefined){
+            this.oglas = {...oglas};
+            this.username = this.oglas.kreiraoKorisnikUsername!;
+            this.userId = this.oglas.kreiraoKorisnikId!;
+            console.log("Ucitan u this.oglas: " + this.oglas);
+            if (!oglas.pretplacujeSeIds)
+            this.oglas.pretplacujeSeIds = [];
+            this.prati = oglas.pretplacujeSeIds!.includes(this.userId);
+            console.log(`debug`);
+            console.log(this.oglas.kategorijaIds);
+            if (this.oglas.kreiraoKorisnikId == this.userId){
+              this.vlasnik=true;
             }
-            if(oglas !== null)
-            {
-              this.oglas = {...oglas};
-              console.log("Ucitan u this.oglas: " + this.oglas);
-              if (!oglas.pretplacujeSeIds)
-              this.oglas.pretplacujeSeIds = [];
-              this.prati = oglas.pretplacujeSeIds!.includes(this.userId);
-              console.log(`debug`);
-              console.log(this.oglas.kategorijaIds);
-              if (this.oglas.kreiraoKorisnikId == this.userId){
-                this.vlasnik=true;
-              }
-              this.oglasService.vidjen(this.oglas!.id);
-              console.log("vidjen");
-              if(this.oglas.kategorije == null)
-                this.oglas!.kategorije = [];
-              
-            }
+            this.oglasService.vidjen(this.oglas!.id);
+            console.log("vidjen");
+            if(this.oglas.kategorije == null)
+            this.oglas!.kategorije = [];
           }
         }
       })
     }
   }
+
+  // ngOnInit(): void {
+  //   console.log(this.route.snapshot)
+  //   if(this.inputOglas != null)
+  //     this.oglas = this.inputOglas;
+  //   else{ 
+  //     this.userId$.pipe(
+  //       combineLatestWith(this.oglas$),
+  //     ).subscribe({
+  //       next: ([userToken, oglas]) => {
+  //         console.log("oba emituju");
+  //         if(userToken != '' && userToken != null){
+  //           this.userId=jwtDecode<JWT>(userToken).sub;
+  //           if (oglas == null){
+  //             this.route.params.pipe(
+  //               take(1)
+  //             ).subscribe((params : Params) => {
+  //               this.oglasId=params['id'];
+  //               this.store.dispatch(ucitajOglasPoId({id: this.oglasId!}))
+  //             })
+  //           }
+  //           if(oglas !== null)
+  //           {
+  //             this.oglas = {...oglas};
+  //             console.log("Ucitan u this.oglas: " + this.oglas);
+  //             if (!oglas.pretplacujeSeIds)
+  //             this.oglas.pretplacujeSeIds = [];
+  //             this.prati = oglas.pretplacujeSeIds!.includes(this.userId);
+  //             console.log(`debug`);
+  //             console.log(this.oglas.kategorijaIds);
+  //             if (this.oglas.kreiraoKorisnikId == this.userId){
+  //               this.vlasnik=true;
+  //             }
+  //             this.oglasService.vidjen(this.oglas!.id);
+  //             console.log("vidjen");
+  //             if(this.oglas.kategorije == null)
+  //               this.oglas!.kategorije = [];
+              
+  //           }
+  //         }
+  //       }
+  //     })
+  //   }
+  // }
   // private initSubs(){
   //   this.initOglasSub();
   //   this.initUserSub();
@@ -191,6 +248,4 @@ export class OglasComponent implements OnInit, OnDestroy {
     this.jointStateSub$.unsubscribe();
   }
 
-  izmeni(){}
-  obrisi(){}
 }

@@ -15,7 +15,7 @@ export class ChatService {
   BASE_URL = `${envLocal.api}/chat`;
   public serverMessage$: Observable<Message> = new Observable<Message>();
   public privateMessage$: Observable<Message> = new Observable<Message>();
-  username: string = jwtDecode<JWT>(localStorage.getItem('token') || '').username;
+  username: string = '';
 
   emptyMessage : Message = {
       tekst: '',

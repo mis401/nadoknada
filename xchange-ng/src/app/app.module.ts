@@ -33,6 +33,8 @@ import { MojiOglasiComponent } from './feature/user/components/moji-oglasi/moji-
 import { ZapraceniOglasiComponent } from './feature/user/components/zapraceni-oglasi/zapraceni-oglasi.component';
 import { PrijaveComponent } from './feature/korisnicka-podrska/components/prijave/prijave.component';
 import { PonudaComponent } from './ponuda/ponuda.component';
+import { komentarReducer } from './feature/komentar/state/komentar.reducer';
+import { chatReducer } from './feature/chat/state/chat.reducers';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,7 @@ import { PonudaComponent } from './ponuda/ponuda.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({user: userReducer, oglas: oglasReducer}),
+    StoreModule.forRoot({user: userReducer, oglas: oglasReducer, komentar: komentarReducer, chat: chatReducer}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
     MatMomentDateModule,

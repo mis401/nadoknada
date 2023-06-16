@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { Conversation } from '../model/conversation.model';
 import { Message } from '../model/poruka.model';
@@ -7,13 +7,15 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { NovKomentarDialogComponent } from 'src/app/feature/komentar/components/nov-komentar-dialog/nov-komentar-dialog.component';
 import { KomentarService } from 'src/app/feature/komentar/services/komentar.service';
+import jwtDecode from 'jwt-decode';
+import { JWT } from 'src/app/feature/user/models/jwt.model';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss']
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages: Message[] = [];
 
   konverzacija: Conversation = {
@@ -30,13 +32,20 @@ export class ChatComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private komentarService: KomentarService) {
   }
-  public username : string = '';
+  public username : string = localStorage.getItem('token') == null ? '' : jwtDecode<JWT>(localStorage.getItem('token')!).username;
   other: string = '';
   messages$ : Subscription = new Subscription();
   convSub : Subscription = new Subscription();
   messageLimit$ : BehaviorSubject<Message> = this.chatService.privateMessages$;
+  @ViewChild('scrollable') private myScrollContainer: ElementRef = new ElementRef('scrollable');
 
   id : string = '';
+
+  scrollToBottom():void {
+    try {
+        this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }                 
+  }
 
   ngOnInit(): void {
     // this.convSub = this.chatService.conversationSubject$.subscribe({
@@ -45,7 +54,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     //     console.log(conversation);
     //     this.konverzacija = {...conversation};
     // }})
-
+    this.scrollToBottom();
     this.convSub = this.route.params.subscribe
     ((params: Params) => {
       this.id = params['id'];
@@ -89,7 +98,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   messageText : string = '';
 
   sendMessage() {
-    
+    if(this.messageText.trim().length == 0) return;
     const newMessage : Message = {
       sender: this.username,
       receiver: this.other,
@@ -120,5 +129,10 @@ export class ChatComponent implements OnInit, OnDestroy {
         }
       }
     })
+  }
+
+
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 }

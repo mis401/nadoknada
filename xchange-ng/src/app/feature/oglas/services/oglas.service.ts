@@ -85,7 +85,7 @@ export class OglasService {
   }
 
   obrisiOglas(oglas: string){
-    return this.http.delete(`${this.BASE_URL}/obrisiOglas/${oglas}`);
+    return this.http.delete(`${this.BASE_URL}/obrisi/${oglas}`);
   }
 
   ucitajOglasPoId(id: string){

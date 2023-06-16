@@ -39,6 +39,7 @@ import { PrihvatanjePonudaDialogComponent } from './components/prihvatanje-ponud
 
 
 
+
 @NgModule({
   declarations: [OglasComponent, 
     OglasListComponent, 
